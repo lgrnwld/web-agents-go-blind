@@ -1,0 +1,10 @@
+{
+  "trial_archives": 5292,
+  "selected_files": 68040,
+  "primary_valid_trials": 1760,
+  "historical_separation_trials": 240,
+  "historical_model_extension_trials": 440,
+  "revision_valid_trials": 2640,
+  "control_trials": 48,
+  "includes_retry_attempts": true
+}

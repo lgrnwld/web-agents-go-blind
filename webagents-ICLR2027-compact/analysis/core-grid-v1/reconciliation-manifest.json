@@ -1,0 +1,38 @@
+{
+  "analysis_id": "final-scanner-v1",
+  "conclusion": "DOM and AX were rescored from immutable archives; neither required a reachability-label change under the final scanner.",
+  "created_at": "2026-08-31T02:33:59.783168+00:00",
+  "datasets": [
+    {
+      "architecture": "dom_extraction",
+      "changed_trial_count": 0,
+      "path": "artifacts/reconciled/final-scanner-v1/dom-full-r5-v1",
+      "receipt_sha256": "3c29182fd7fc83b5a8413c7eed7d9fc3c3c865f7ea98a1e98311729606ad2f89",
+      "results_sha256": "ea730a82f36d2a9ebbb69ad5043440598ca68c9395f904d56539759c52e1873e"
+    },
+    {
+      "architecture": "accessibility_tree",
+      "changed_trial_count": 0,
+      "path": "artifacts/reconciled/final-scanner-v1/ax-full-v1-infra-retry-v1",
+      "receipt_sha256": "ff113eb6c4cdea86a637ae0808ba831b5ed29cbb6e2ab629c9c7098e3a212850",
+      "results_sha256": "f9d39397b58bf07238f8e8898087dd0ee9ac28bd7fef5adf1077ec1a94b0fb74"
+    },
+    {
+      "architecture": "vision",
+      "changed_trial_count": null,
+      "path": "artifacts/sweeps-r5/vision-final/vision-full-scan-v2",
+      "receipt_sha256": "26a49fa73819f0ccb3c38f537c6f04df626ed206929da9a685b57d003aa19028",
+      "results_sha256": "7f584065d4617c8fd76cd4be6a5a507ae560f7465bfc89c208727d9cc7b07500"
+    },
+    {
+      "architecture": "cdp_frame_traversal",
+      "changed_trial_count": null,
+      "path": "artifacts/sweeps-r5/cdp-final/cdp-frame-traversal-full-v1",
+      "receipt_sha256": "fb7f1217197cd522c320848f4d7e1b30901c40b242d11fa323c112344283d7e8",
+      "results_sha256": "ac55071c8248c6e0c8242f6c46d0a66dfdfe405986bef85e227e999dca95f904"
+    }
+  ],
+  "provider_calls": 0,
+  "schema_version": "1.0",
+  "scoring_policy": "initial-task-page-marker-v2"
+}

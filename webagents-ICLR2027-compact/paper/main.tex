@@ -1,0 +1,343 @@
+\documentclass{article}
+
+% ICLR 2027 anonymous initial submission. Official style files are unmodified.
+\usepackage{iclr2027_conference,times}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{array}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=blue
+}
+
+\graphicspath{{figures/}}
+
+\title{Where Web Agents Go Blind:\\Decomposing Reachability from Task Success\\in Structurally Contained Web Content}
+
+% Author identities are omitted for double-blind review.
+\author{Anonymous Author(s)}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Web-agent evaluations conflate missing evidence with failures after observation. We introduce a controlled benchmark that separates reachability from task success while varying iframe depth and origin, shadow DOM containment, and DOM-versus-canvas rendering. Across a 1,760-trial primary grid, every architecture reached every non-canvas target. On canvas, DOM, accessibility-tree, and CDP observations fell from 40/40 to 0/40 reachability, whereas screenshots remained at 40/40. The original vision deployments completed 0/40 canvas trials, appending an adjacent marker to the target. Two added deployments showed model heterogeneity on the original layout: \texttt{gpt-5.4} completed 15/20 trials and \texttt{gpt-5-mini} 0/20. The original deployments' pooled separation curve rose from 0/40 inline to 38/40 at opposite corners, but the added deployments' task-success curves were not uniformly monotonic. A further 2,640-trial revision extends that sweep, measures delimitation error against pixel and DOM separation in tables, cards, and forms, tests visible component boundaries and explicit target formatting, and reruns iframe vision cells with calibrated, position-matched fixtures. On a contemporaneous inline baseline, the format prompt changed success for the original deployments from 0/40 to 35/40. Independent implementation probes replicate the iframe reachability null. The original variance decomposition is retained only as a confounded descriptive audit. Observation boundaries are properties of complete, versioned stacks; visible evidence still requires reliable delimitation, localization, and action execution.
+\end{abstract}
+
+\section{Introduction}
+
+Web agents now complete multi-step tasks on realistic websites by repeatedly observing a page, selecting an action, and interpreting the resulting state \citep{deng2023mind2web,zhou2024webarena,he2024webvoyager}. Observation channels differ: some serialize the Document Object Model (DOM), some consume the accessibility tree, some reason over screenshots, and others traverse browser protocols. Standard execution-based evaluation reports whether the final task succeeded, but it generally assumes that task-relevant evidence was available to the agent. Consequently, the same failure label can mean either that evidence was absent from the observation or that the model misread, mislocalized, or failed to act on available evidence.
+
+Modern web structure makes that distinction consequential. Cross-origin iframes separate browsing contexts under the browser same-origin policy; shadow roots encapsulate component subtrees; and canvas exposes pixels without a corresponding textual DOM representation. These mechanisms are common in enterprise and embedded interfaces. They also create security tensions: browser agents with broad cross-origin access can recover useful embedded content, but that access can weaken browser isolation when combined with prompt injection \citep{roesner2026agentic}.
+
+For agents operating in open-ended environments, such silent observation gaps are both a reliability and an oversight problem: an agent may proceed without knowing that decisive evidence was omitted, while granting broader observation privileges can create new privacy and security exposure. A useful evaluation must therefore distinguish capability under-reach from the separate question of whether an observation channel should be permitted to cross a boundary.
+
+Existing benchmarks establish that observation modality matters \citep{koh2024visualwebarena}, that controlled perturbations reveal hidden robustness gaps \citep{bai2026stressweb,yuan2026webforge}, and that canvas can separate visual from structural observations \citep{levy2026stwebagentbench}. None, however, treats structural reachability as a graded independent variable while holding task content fixed and scoring evidence availability separately from task completion.
+
+We make three contributions. First, we introduce a version-pinned structural-containment benchmark whose tasks vary only in iframe depth and origin, shadow-root mode, or rendering target. Second, we report paired reachability and task-success curves, enabling failures before observation to be distinguished from interpretation or execution failures; error coding of archived responses further separates extraction, delimitation, localization, and action-execution failures within the post-capture category. Third, we extend the separation sweep across four vision deployments, measure pixel and DOM separation in three familiar layouts, test an explicit-format prompt, and rerun calibrated iframe cells at matched randomized positions. Together with independent implementation probes, these controls distinguish observation boundaries from delimitation and coordinate artifacts. The result is deliberately diagnostic rather than leaderboard-oriented: it maps where tested observation pipelines lose evidence and where agents fail despite retaining it.
+
+\section{Related work}
+
+WebArena and WebArena Verified provide realistic tasks with execution-based evaluators \citep{zhou2024webarena,elhattami2025verified}; VisualWebArena demonstrates that text and multimodal observations yield different outcomes \citep{koh2024visualwebarena}. StressWeb and WebForge introduce controlled difficulty and robustness perturbations \citep{bai2026stressweb,yuan2026webforge}, while ST-WebAgentBench includes a canvas modality challenge \citep{levy2026stwebagentbench}. Our benchmark instead holds task semantics fixed, varies structural containment, and scores evidence availability separately from completion.
+
+Cross-origin access is also a security choice: consumer agentic browsers implement different policies, and permissive access can enable data theft under prompt injection \citep{roesner2026agentic}. We measure capability on self-authored pages, not whether such access should be granted.
+
+\section{Benchmark and methods}
+\label{sec:methods}
+
+\subsection{Tasks and structural axes}
+
+The benchmark contains two deterministic tasks: reading a known value and copying a known value into a target field. Each task first passes a level-0 control consisting of a flat, single-frame, shadow-free, canvas-free page. Generated variants preserve the task instruction, correct answer and marker tokens, and external checker while changing one of four ordered axes:
+\begin{enumerate}
+  \item same-origin iframe depth 0--3;
+  \item cross-origin iframe depth 0--3;
+  \item shadow containment (none, open, closed, nested open--open); and
+  \item rendering target (ordinary DOM or canvas).
+\end{enumerate}
+The shared level-0 condition yields 11 unique structural conditions. Pages and checkers were self-authored and deterministic; no live or authenticated service was included.
+
+\paragraph{Fixed task content.}
+Across conditions the instruction string, correct answer token, source label, and task-specific marker token are identical. The complete visible strings and layout are not byte- or pixel-identical: DOM pages place the source and prefixed marker in separate elements, whereas canvas draws the source label, value, separator, and unprefixed marker as one line. The experiment therefore holds task semantics and the two load-bearing tokens fixed while changing both representation and the boundary cues that representation provides.
+
+\paragraph{Separation and revision studies.}
+The original six-layout vision follow-up held tokens, typeface, task, and checker fixed while varying target--marker separation, with ten repeats per task and deployment ($N=240$). The revision adds 240 trials on \texttt{gpt-5.4} and \texttt{gpt-5-mini} using those same fixtures. Three familiar shells---tables, cards, and forms---cross text-box edge gaps of 8/40/96 pixels with DOM distances of zero/four parent edges ($N=1{,}440$). Visually identical DOM variants serve as negative controls; a further 240 trials use visibly distinct labeled components. A paired inline-canvas study tests explicit target formatting ($N=160$). Finally, 560 calibrated iframe trials cross four deployments, two tasks, seven conditions, and ten repeats, with positions randomized by task/repeat and matched across conditions. All new arms retain eight actions and 90 seconds. Appendix~\ref{app:revision-design} specifies geometry, prompts, scoring, and coordinate checks.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figure1.png}
+  \caption{Controlled benchmarking pipeline for web-agent observability. Fixed task semantics are crossed with structural-containment conditions and four observation channels; reachability and exact-match task success are scored separately before diagnostic analysis.}
+  \label{fig:overview}
+\end{figure}
+
+
+\subsection{Observation architectures and crossed models}
+
+We evaluate four architecture classes defined by their page representation: \emph{DOM extraction} serializes page structure through an automation framework; \emph{accessibility tree} consumes the browser-computed accessibility representation; \emph{vision} receives screenshots and emits coordinate actions; and \emph{Chrome DevTools Protocol (CDP) traversal} consumes browser-level DOM snapshots and frame state. One version-pinned implementation instantiates each class (Appendix~\ref{app:implementations}). The labels therefore denote the tested pipelines rather than universal properties of every product using the same modality.
+
+Each architecture is crossed with the same two hosted base models in the primary grid. Every task--model--condition cell contains ten valid trials, giving $4\times2\times2\times11\times10=1{,}760$ outcomes. Before the sweeps, a 48-trial control gate required all architecture--model pairs to pass both control tasks three times. In response to the small original roster, a separately versioned vision-only extension adds \texttt{foundry/gpt-5.4} and \texttt{foundry/gpt-5-mini} on the same two tasks, 11 conditions, and ten-trial allocation (440 additional valid outcomes). Run manifests preserve framework, browser, model deployment, timestamp, task revision, prompt version, and source hashes.
+
+\subsection{Outcomes and analysis}
+
+\textbf{Reachability} indicates whether the task-specific marker appears in the architecture's initial task-page evidence; it is rescored from immutable archives without another model call. For the three structure-based architectures this is a text-match test against the archived initial-page serialization. Vision likewise uses no model call: a separate privileged Playwright probe searches every page frame for a benchmark selector (the marker element, target canvas, or shadow host), obtains its bounding box, and scores the trial reachable when at least one nonzero box intersects the $1280\times900$ captured viewport. For the canvas condition, the operative selector is \texttt{\#target-canvas}. The probe does not perform optical character recognition or pixel-template matching, and none of its metadata enters the model request. Reachability therefore measures presence of the evidence-bearing fixture region in the observation, and is scored independently of whether the model transcribed, delimited, or acted on it.
+
+\textbf{Task success} is determined by an external state checker using exact match against the correct answer. Strict equality was fixed before the sweeps; Section~\ref{sec:canvas} reports a post hoc sensitivity analysis under a relaxed criterion, because the observed canvas failures were compositional rather than substitutional.
+
+For canvas sensitivity analyses we score the emitted answer (read) or submitted field value (copy) under three content criteria: exact match after outer-whitespace stripping; target present as a substring; and target present with the task-specific marker absent. The third permits explanatory wrapper text but rejects the observed target--marker concatenation.
+
+We additionally record actions, input tokens, output tokens, elapsed time, and four joint outcomes formed by crossing reachability with success. Success conditional on unreachable evidence is reported only as an operational confabulation proxy, not as a claim about model intent.
+
+\textbf{Failure coding.} For every failed vision trial we additionally code, from the archived model response and action log, where in the pipeline the failure occurred: extraction (the correct answer token is absent or altered in the response), delimitation (the correct token is present but bounded incorrectly, so the emitted string is a superset or subset of the answer), localization (the response is correct but coordinate actions target the wrong element), action execution (correct content and target, but the emitted action sequence does not reach the checked state), and abstention. Coding operates on preserved archives and requires no additional model calls.
+
+Proportions use two-sided Wilson 95\% confidence intervals (CIs). Reachability estimates and Figure~\ref{fig:outcomes}A pool the two tasks and two primary models within an architecture ($N=40$ per condition), as reachability is scored without a model call. Figure~\ref{fig:outcomes}B combines the primary and extension deployments on the matched original-layout vision-canvas cells while pooling tasks ($N=20$ per deployment); Appendix~\ref{app:modelcells} reports the underlying task--model cells ($N=10$). The four-model vision results are otherwise kept deployment-resolved, and the extension models do not enter architecture comparisons because they were not run on the three structure-based stacks. Curves use normalized trapezoidal area under the curve (AUC), total level-0-to-final drop, largest adjacent drop, and a preregistered cliff indicator. The registered variance decomposition is retained only as a confounded descriptive audit in Appendix~\ref{app:variance-audit}. Full definitions appear in Appendix~\ref{app:statistics}.
+
+\section{Results}
+\label{sec:results}
+
+All four sweeps were complete and balanced at 440 valid outcomes per architecture. The control gate passed 48/48 trials. A provider-free rescore of the DOM and accessibility-tree archives under the final initial-page policy changed no trial labels.
+
+\begin{table}[t]
+  \caption{Overall outcomes and recorded resource use across all 11 conditions ($N=440$ per architecture). Tokens are mean input plus output tokens; provider-dollar cost was not present in archived responses. Success is scored by exact match; see Section~\ref{sec:canvas} for a relaxed-criterion sensitivity analysis of the vision canvas cells.}
+  \label{tab:overall}
+  \centering
+  \small
+  \begin{tabular}{lrrrr}
+    \toprule
+    Architecture & Reachability & Success & Actions/run & Tokens/run \\
+    \midrule
+    DOM extraction & 400/440 & 400/440 & 2.46 & 14,839 \\
+    Accessibility tree & 400/440 & 398/440 & 2.03 & 14,927 \\
+    Vision & 440/440 & 357/440 & 4.16 & 8,645 \\
+    CDP traversal & 400/440 & 399/440 & 2.71 & 8,765 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Reachability was flat except at the rendering boundary}
+
+Every architecture exposed the target marker in 40/40 trials for every non-canvas condition (Wilson 95\% CI 91.2--100\%). Thus neither iframe origin or depth nor open, closed, or nested shadow containment caused measured reachability loss in the tested implementations. Because structure-based reachability is scored by text match and vision reachability by a privileged Playwright probe, neither score requires or depends on a model call. Pooling reachability over models is therefore appropriate by construction. A targeted replication then tested the iframe cells using Selenium recursive frame switching as a second DOM implementation and Playwright's public per-frame Accessible Rich Internet Applications (ARIA) snapshot as a second accessibility implementation. Each reached 16/16 task--origin--depth cells. The null therefore held in both tested DOM implementations and both tested accessibility implementations, rather than only in browser-use and one raw-CDP accessibility collector. This result contradicts the cross-origin and closed-shadow cliffs predicted by the mechanistic account that motivated the design.
+
+Canvas produced the sole reachability separation (Figure~\ref{fig:outcomes}A). DOM extraction, accessibility tree, and CDP traversal each fell from 40/40 on the ordinary DOM target to 0/40 on canvas (0\%; 95\% CI 0--8.8\%). Vision remained at 40/40 because the target pixels remained in the screenshot. Under the cliff rule, every task--model curve in the three structure-based architectures contained a complete canvas cliff; vision contained none.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{outcomes.pdf}
+  \caption{\textbf{Evidence availability and task completion separate under visual observation.} (A) Primary-grid canvas estimates pool two tasks and two models ($N=40$). Structure-based observations neither reached nor completed the task; vision reached 40/40 targets but completed 0/40 under exact match. (B) The matched original-layout vision-canvas cells combine the two primary and two extension deployments while retaining deployment-level estimates ($N=20$ each): \texttt{gpt-5.4} completed 15/20, whereas the other three completed 0/20. Whiskers are Wilson 95\% confidence intervals; Appendix~\ref{app:modelcells} gives the $N=10$ task--model cells and the full four-deployment vision grid.}
+  \label{fig:outcomes}
+\end{figure}
+
+\subsection{Task success separated visibility from execution}
+
+Success closely tracked reachability for structure-based observations. Excluding canvas, DOM extraction completed 400/400 trials, accessibility tree 398/400 (99.5\%), and CDP traversal 399/400 (99.8\%); all three then completed 0/40 canvas trials. Among the 40 unreachable trials for each of these architectures, none succeeded, giving a confabulation-proxy estimate of 0\% (95\% CI 0--8.8\%). Vision had no unreachable trials, so its conditional proxy is undefined rather than zero.
+
+Vision exposed the complementary failure mode (Figure~\ref{fig:outcomes}B): the original deployments reached all 40 canvas targets but completed none, while completing all 120 shadow-containment trials. The original iframe success pattern was confounded by screenshot scaling and fixed absolute positions; Appendix~\ref{app:revision-design} preserves the full audit. The earlier 440-trial vision extension showed original-layout heterogeneity: \texttt{gpt-5.4} completed 15/20 canvas trials and \texttt{gpt-5-mini} 0/20. These fixed-position results motivate the separation extension and calibrated rerun below, rather than a depth claim.
+
+\subsection{Canvas failure was a delimitation failure, not blindness}
+\label{sec:canvas}
+
+Coding the 40 failed canvas trials from the two original deployments against the archived model responses and action logs, both deployments failed all 20 trials each. Across all 40, 40/40 misreported the exact target value, 0/40 reported it correctly but mislocalized the \texttt{Destination} field, 0/40 reached correct extraction and localization but failed during action execution, and 0/40 refused or abstained. Every response appended the visible control marker to the true token; in all 20 copy trials, the checker recorded that composite string in the \texttt{Destination} field. Within that preregistered roster, failure was entirely extraction---specifically, target delimitation---rather than grounding or action execution. The later \texttt{gpt-5.4} successes show that the behavior is not model-universal.
+
+The original failure was compositional rather than substitutional: the correct token was recovered from pixels in every coded trial and was then over-included rather than replaced or hallucinated. The follow-up below identifies the operative factor more narrowly: close visual layout makes the answer boundary ambiguous, while structural serialization can supply a boundary when the tokens occupy distinct elements. Canvas is one way to remove those structural cues, not a sufficient cause of failure by itself.
+
+\paragraph{Checker sensitivity.}
+Because all 40 responses contained the target token as a substring, the canvas success rate depends jointly on rendering and on scoring strictness. We therefore report three criteria: the preregistered exact match (0/40), a permissive substring check (40/40), and an intermediate check allowing wrapper text but requiring that the target appear and the task-specific marker be absent (0/40). The last criterion rejects precisely the observed boundary error without requiring bare-token output. Thus the claim that these trials failed to delimit target from marker does not depend on choosing exact match over substring; substring instead serves as evidence that the target glyphs were read.
+
+\paragraph{The original deployments show a separation dose--response.}
+For the original two deployments in the controlled follow-up, exact-match and target-without-marker criteria agreed at every level and increased monotonically from 0/40 for the inline bar, to 0/40 for two spaces, 10/40 for a 40-pixel gap, 31/40 for separate lines, and 38/40 for opposite corners. The corresponding Wilson 95\% intervals were 0--8.8\%, 0--8.8\%, 14.2--40.2\%, 62.5--87.7\%, and 83.5--98.6\%. This dose--response is specific to the original pooled deployments. The same-element DOM inline-bar control also scored 0/40 under exact and target-without-marker criteria while retaining the target substring in 40/40. Thus the original failure is not uniquely caused by canvas rendering; it is a layout-driven delimitation failure that canvas serialization cannot repair with element boundaries. Under the permissive substring criterion, the five canvas levels scored 37/40, 35/40, 29/40, 37/40, and 38/40; the nonmonotonic values reflect complete timeout/failure transcripts concentrated in Kimi copy trials rather than target--marker boundary acceptance.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.92\linewidth]{canvas-separation.pdf}
+  \caption{\textbf{Task success depends on separation, task, and deployment.} Exact-match success is shown separately for reading and copying, with ten trials per deployment--task--layout cell. The original two deployments and the two added deployments use the same follow-up fixtures and budgets in separate run windows. The full three-criterion estimates and Wilson intervals, including the DOM inline control, are in the artifact.}
+  \label{fig:separation}
+\end{figure}
+
+\input{revision-results}
+
+\subsection{Observation channels had different resource profiles}
+
+Resource use did not follow a simple ``vision is more expensive'' pattern. Vision took the most actions but used fewer tokens overall and per action (2,076 tokens/action) than DOM extraction (6,034), accessibility tree (7,338), or CDP traversal (3,230). Per-action figures are means of per-trial ratios and therefore differ slightly from the ratio of the pooled means in Table~\ref{tab:overall}. Accessibility-tree tokens per action rose most sharply with iframe depth, consistent with increasingly large serialized tree contexts. Appendix~\ref{app:cost} shows the pooled iframe-depth curve; the artifact includes the complete per-condition cost curves. Because archived responses omitted billing amounts, we report actions and tokens rather than imputing dollar cost.
+
+\section{Discussion}
+The results separate observation capability from usability. The tested iframe and shadow conditions removed no evidence, whereas canvas removed textual evidence from the three structure-based stacks but not from screenshots. Independent implementations replicated the iframe reachability null. Automation and browser-protocol layers can expose content across boundaries that constrain page scripts, so these findings concern versioned collectors rather than universal properties of a modality. They do not establish that such access should be granted.
+
+For vision, the original failure was visual delimitation: the correct glyphs were recovered with an adjacent marker. The separation extension shows that successful reading need not imply successful copying; the familiar-layout experiments further distinguish candidate content from submission. Explicit target formatting improved the original deployments from 0/40 to 35/40 against a contemporaneous baseline, providing a tested design intervention. Visible labeled components also eliminated observed delimitation errors, although their labels, geometry, and boundaries changed together. Region prompts and DOM cross-checks remain untested. These controlled tasks do not establish a universal separation threshold or real-site robustness.
+
+The calibrated iframe rerun removes the old deterministic scale and position confounds, but ten paired repeats cannot establish depth equivalence. The original variance shares remain a descriptive audit: resampling cannot remove systematic fixture bias. A broader variance analysis requires the full model roster crossed with every architecture. Evaluation should retain reachability, delimitation, submission, and resource use separately. Vision's higher action count but lower token use also motivates testing selective hybrid observation, rather than ranking channels by a single aggregate score.
+
+\section{Limitations}
+
+Two synthetic tasks isolate mechanisms but do not establish performance on long-horizon websites or combined structural barriers. Each architecture remains one versioned stack, although independent DOM and accessibility probes replicated the iframe null. The two added deployments cover only vision, so they reveal model heterogeneity without supporting a four-model architecture comparison; the coordinate confound independently makes the registered variance shares non-causal. Marker presence establishes availability, not successful interpretation or action.
+
+The grid omits permission-respecting real-page and restricted-security arms, provider-dollar cost, and machine-level energy. The original canvas fixture also coupled rendering with close layout; the separation sweep, DOM control, and three scoring criteria address but do not exhaust that design space or establish a universal separation threshold. The zero-success confabulation proxy has an 8.8\% upper Wilson bound, so it is evidence against frequent unsupported success rather than proof of impossibility. Failure labels infer stages from archives rather than latent states; the blinded coder agreed on 40/40 cases, but ordinary Cohen's $\kappa$ is undefined because both coders used one category (prevalence-adjusted bias-adjusted $\kappa=1.00$ only as a sensitivity statistic).
+
+\section{Conclusion and future work}
+Iframe and shadow containment caused no reachability loss in the tested stacks, while canvas separated screenshot from structural evidence. The follow-ups reveal deployment- and task-dependent separation curves and a practical benefit from explicit target formatting. Calibrated iframe cells show perfect reading and no consistent copy-success gradient with depth, without establishing equivalence. Evaluations should attach claims to versioned stacks and distinguish missing evidence, delimitation, localization, and action execution.
+
+Future work should combine structural barriers on permission-respecting sites, test restricted observation policies against adversarial instructions and sensitive decoys, and evaluate when hybrid agents should invoke region prompts or structural cross-checks. Larger paired samples and a fully crossed model--architecture roster are needed for broader depth and variance claims.
+
+\label{main:end}
+\clearpage
+\subsection*{AI use statement}
+Generative AI assistance (OpenAI Codex) was used to implement benchmark runners, synthetic fixtures, scoring, analysis utilities, and figures; coordinate experiment execution; refine follow-up experimental designs; interpret archived results; and draft, revise, and format manuscript text. The historical failure-coding audit also used an independent blinded LLM coding pass, as described in Appendix~\ref{app:failurecoding}. Validation included automated scoring tests, fixture geometry and click/submit checks, archived-response inspection, paired-image hash audits, and visual inspection of the generated figures and PDF. Benchmark-model outputs are retained as experimental observations rather than treated as ground truth. The authors remain responsible for the final text, code, data, claims, citations, and artifacts.
+
+\subsection*{Ethics statement}
+All URLs and assets were self-authored synthetic fixtures. The motivating healthcare portal was never accessed or included; no personal data, third-party accounts, human participants, or crowdsourced labor were used. Broader cross-origin reach may enable data exfiltration under prompt injection, so capability should be separated from permission and paired with access controls, provenance logging, and evaluation of restricted versus unrestricted modes before deployment.
+
+\subsection*{Reproducibility statement}
+Section~\ref{sec:methods} defines the tasks and outcomes. Appendices~\ref{app:implementations} and~\ref{app:revision-design} document the versioned stacks, fixture geometry, prompts, run allocation, and coordinate checks; Appendices~\ref{app:statistics} and~\ref{app:calibrated} give statistical definitions and calibrated cells. The accompanying revision tables and manifests record all 2,640 new valid trials and their provenance. The original anonymous repository is linked in Appendix~\ref{app:reproducibility}; original and revision run windows remain distinct.
+
+\clearpage
+\bibliographystyle{iclr2027_conference}
+\bibliography{references}
+
+\clearpage
+\appendix
+\section*{Supplementary Material}
+
+\section{Implementation and run provenance}
+\label{app:implementations}
+
+\begin{table}[h]
+  \caption{Version-pinned implementations used in the completed grid. Model deployment identifiers are the aliases recorded in the manifests.}
+  \label{tab:implementations}
+  \centering
+  \small
+  \begin{tabularx}{\linewidth}{lXl}
+    \toprule
+    Class & Implementation & Prompt/version \\
+    \midrule
+    DOM extraction & browser-use 0.13.7 at commit \texttt{f0aa3a8}; Chromium 1228 & \texttt{dom-no-vision-v2} \\
+    Accessibility tree & Playwright 1.61.0; Chromium 1228; CDP accessibility snapshot & \texttt{ax-full-action-v3} \\
+    Vision & Playwright 1.61.0 screenshot and coordinate-action runner; Chromium 1228 & \texttt{vision-coordinate-v1} \\
+    CDP traversal & Playwright 1.61.0 CDP DOM-snapshot runner; Chromium 1228 & \texttt{cdp-snapshot-v1} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+The two primary Azure AI Foundry deployments were recorded as \texttt{foundry/gpt-5.6-terra} and \texttt{foundry/Kimi-K2.6}. The vision-only extension added \texttt{foundry/gpt-5.4} and \texttt{foundry/gpt-5-mini}; its 440/440 valid outcomes are hash-bound to the primary vision resolved specification. Primary-grid execution ran from 2026-08-30 17:55:16 to 2026-08-31 02:17:28 UTC, and the provider-free reconciliation manifest was written at 02:33:59 UTC. The 2026-09-04 follow-ups have separate immutable windows: the implementation probes ran 14:38:00--14:38:04 UTC, the 240-trial separation sweep 14:51:51--15:10:19 UTC, and the 440-trial vision extension 15:28:33--16:02:50 UTC. These dates are reported separately rather than retroactively changing the primary receipts. The DOM, accessibility, vision, and CDP receipts each contain task revisions, condition and model rosters, valid-trial counts, source and result hashes, exclusions, and completion verdicts. The final primary control gate used the same four architecture classes and two models and passed all 48 required trials.
+
+For the iframe replication, Selenium 4.48.0 recursively switched into each frame and inspected that frame's own \texttt{page\_source}; Playwright 1.61.0 independently obtained a public \texttt{aria\_snapshot} from each frame. Neither path reused browser-use's serialization or the primary accessibility runner's raw \texttt{Accessibility.getFullAXTree} call. Both reached all 16 task--origin--depth cells.
+
+\paragraph{Revision-run provenance.} The new separation, generalization, visible-boundary, intervention, and calibrated-iframe arms contain 240, 1,440, 240, 160, and 560 valid trials, respectively (2,640 total). Recorded new-trial timestamps span 2026-09-15T18:31:00.151404Z to 2026-09-16T00:29:10.284138Z. Each arm retains its own frozen fixture source, matrix, geometry, model identifiers, and result hash. Interrupted runs inherit completed outcomes unchanged and resume only unfinished or infrastructure-failed cells. The attached paper's text matches the archived editing source across all 13 pages. The revision package supplies per-trial measurements and cell estimates; raw local archives retain screenshots, actions, prompts, and responses. These new artifacts are separate from the original public artifact snapshot.
+
+\section{Model-resolved task-success cells}
+\label{app:modelcells}
+
+The headline primary-grid results remain pooled where the split is uninformative. Table~\ref{tab:structural-models} confirms that both primary deployments were at or near ceiling for every non-canvas structure-based architecture. Figure~\ref{fig:outcomes}B combines all four deployments on the matched original-layout vision-canvas cells; Table~\ref{tab:vision-model-task-cells} reports the complete four-deployment vision grid. The extension models were not run through the three structure-based agent stacks and therefore do not enter an architecture-by-model decomposition.
+
+\begin{table}[h]
+  \caption{Non-canvas task success for the three structure-based architectures, shown by model deployment. Each model column contains $N=200$ trials; the pooled column contains $N=400$.}
+  \label{tab:structural-models}
+  \centering
+  \small
+  \begin{tabular}{lrrr}
+    \toprule
+    Architecture & \texttt{gpt-5.6-terra} & \texttt{Kimi-K2.6} & Pooled \\
+    \midrule
+    DOM extraction & 200/200 & 200/200 & 400/400 \\
+    Accessibility tree & 200/200 & 198/200 & 398/400 \\
+    CDP traversal & 200/200 & 199/200 & 399/400 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[h]
+  \caption{Complete four-deployment vision iframe task-success grid. Entries are successes out of ten trials. S denotes same-origin and X cross-origin; depth 0 is the shared level-0 control and is repeated across the two blocks for comparison. The bottom four rows are the vision-only extension.}
+  \label{tab:vision-model-task-cells}
+  \centering
+  \small
+  \setlength{\tabcolsep}{3pt}
+  \resizebox{\linewidth}{!}{%
+  \begin{tabular}{llrrrrrrrr}
+    \toprule
+    Model deployment & Task & S0 & S1 & S2 & S3 & X0 & X1 & X2 & X3 \\
+    \midrule
+    \texttt{foundry/gpt-5.6-terra} & Copy & 10/10 & 0/10 & 10/10 & 10/10 & 10/10 & 0/10 & 10/10 & 9/10 \\
+    \texttt{foundry/gpt-5.6-terra} & Read & 10/10 & 10/10 & 10/10 & 0/10 & 10/10 & 10/10 & 10/10 & 0/10 \\
+    \texttt{foundry/Kimi-K2.6} & Copy & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 8/10 \\
+    \texttt{foundry/Kimi-K2.6} & Read & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 \\
+    \midrule
+    \texttt{foundry/gpt-5.4} & Copy & 10/10 & 2/10 & 0/10 & 7/10 & 10/10 & 0/10 & 7/10 & 2/10 \\
+    \texttt{foundry/gpt-5.4} & Read & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 \\
+    \texttt{foundry/gpt-5-mini} & Copy & 10/10 & 10/10 & 9/10 & 7/10 & 10/10 & 9/10 & 9/10 & 8/10 \\
+    \texttt{foundry/gpt-5-mini} & Read & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 \\
+    \bottomrule
+  \end{tabular}%
+  }
+\end{table}
+
+\section{Statistical definitions}
+\label{app:statistics}
+
+For a curve with ordered rates $y_0,\ldots,y_L$, normalized AUC is the equally spaced trapezoidal area divided by $L$; total drop is $y_0-y_L$; and the largest single-level drop is $\max_{\ell}(y_{\ell-1}-y_\ell)$. The cliff ratio is the largest adjacent drop divided by total drop. Curves with total drop below 0.20 are labeled \texttt{no\_material\_net\_drop}; remaining curves are labeled \texttt{cliff} when the ratio is at least $2/3$ and \texttt{slope} otherwise. Threshold sensitivity at 0.50 and 0.75 was also computed.
+
+Wilson intervals use the two-sided 95\% score interval. Curve-metric and variance-component intervals use a deterministic stratified nonparametric bootstrap: trials are resampled with replacement within each task--model--condition cell, and the complete statistic is recomputed for 2,000 resamples. Where a contrast is deterministic within cells, as for the canvas reachability split, the resulting interval is degenerate and carries no information about sampling variability. Curve shape for the variance decomposition is represented by level-0-minus-level rates at every nonbaseline axis level, averaged over the two tasks. A balanced two-way sum of squares partitions variation into architecture, model, and interaction shares, normalized by their sum.
+
+New-study rates use Wilson intervals. Paired-effect intervals use 10,000 bootstrap samples of complete randomized-position repeat blocks within task strata, preserving paired conditions and the layout/gap observations sharing each position. Degenerate paired bootstrap intervals reflect no observed variation, not certainty about future trials; cell Wilson intervals remain informative at ceiling. These exploratory comparisons use no equivalence margin or multiplicity adjustment.
+
+\section{Failure coding scheme}
+\label{app:failurecoding}
+
+Each failed vision trial is assigned exactly one category, applied in order, from the archived response text and action log:
+
+\begin{enumerate}
+  \item \textbf{Extraction---substitution}: the correct answer token does not appear in the response.
+  \item \textbf{Extraction---delimitation}: the correct answer token appears, but the emitted answer is a strict superset or subset of it (for example, an adjacent visible string is appended).
+  \item \textbf{Localization}: the emitted answer is exactly correct, but coordinate actions targeted an element other than the specified field.
+  \item \textbf{Action execution}: content and target are both correct, but the emitted action sequence did not produce the checked state.
+  \item \textbf{Abstention}: the model declined, reported that it could not find the target, or emitted no answer.
+\end{enumerate}
+
+Categories are mutually exclusive and jointly exhaustive over failed trials. Coding operates only on preserved archives and involves no additional provider calls, so it inherits the provider-free reproducibility of the rest of the analysis. Initial labels were assigned deterministically by exact-string and substring comparison against the known target and marker, then hand-checked against all 40 archived response and action records. A second coding agent independently received a randomized packet with opaque case identifiers and was blinded to model, condition, repeat, run identifier, first-coder labels, and aggregate results. It assigned all 40 cases to extraction failure, matching the first coder in 40/40 cases. Ordinary Cohen's $\kappa$ is undefined because both marginal label distributions have zero variance (expected chance agreement is 1.0); raw agreement is 100\%, and prevalence-adjusted bias-adjusted $\kappa=1.00$ is reported only as a sensitivity statistic.
+
+\section{Recorded resource curves}
+\label{app:cost}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{cost.pdf}
+  \caption{\textbf{Serialized context grows differently across observation channels.} Lines show mean input-plus-output tokens per recorded action across iframe depth, pooling same- and cross-origin conditions, tasks, and models. The shared depth-0 control has $N=40$ per architecture; depths 1--3 have $N=80$ each. Overall actions and tokens per run are reported in Table~\ref{tab:overall}; complete per-condition estimates are included in the artifact.}
+  \label{fig:cost}
+\end{figure}
+
+\input{revision-design-details}
+
+\section{Registered variance decomposition: descriptive audit}
+\label{app:variance-audit}
+
+The registered decomposition assigned 100\% of reachability curve-shape variance to architecture. Task-success shares were architecture 48.7\% (95\% CI 43.0--54.9\%), model 13.9\% (11.2--17.0\%), and interaction 37.4\% (31.7--43.1\%). These reproducible summaries describe the original stacks, not causal architecture, model-family, or depth effects. Structure-based agents were near ceiling outside canvas, leaving nearly all non-deterministic variation in vision cells affected by coordinate-scale and absolute-position confounds. Resampling identical screenshots cannot remove that bias. The original-layout extension's 15/20 versus 0/20 canvas contrast broadens deployment coverage, but a vision-only extension cannot support a balanced architecture--model decomposition. That comparison requires calibrated, position-matched fixtures and the complete model roster crossed with all architectures.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{variance.pdf}
+  \caption{\textbf{Registered decomposition of the original grid, retained as a runner audit.} Points show each component's share of the balanced two-way sum of squares; horizontal whiskers are stratified-bootstrap 95\% intervals. Post hoc inspection identified coordinate-scale and absolute-position confounds in the vision cells that supply nearly all non-deterministic variation, so these shares are not interpreted as causal architecture, model-family, or depth effects.}
+  \label{fig:variance}
+\end{figure}
+
+
+\input{revision-appendix}
+
+\section{Reproducibility notes}
+\label{app:reproducibility}
+
+The original code, benchmark fixtures, archived outcomes, and analysis artifacts are available in an anonymous repository: \url{https://anonymous.4open.science/r/web-agents-cant-see-61DC/}.
+
+A complete reproduction requires a supported Chromium installation, Python dependencies pinned by the repository lockfile, and access to the recorded hosted model deployments (two for the primary grid, four for the revision). All analyses and figures can be regenerated from preserved archives without provider calls. API credentials are supplied through environment variables and are excluded from manifests and source control.
+
+Experiments ran from a local Apple M2 machine with eight processor cores and 16 gigabytes of unified memory; model inference was provided by hosted Azure AI Foundry deployments, whose server hardware was not exposed. Across the 1,760 primary-grid trials, archived elapsed times sum to 34,253 seconds (9.51 trial-hours), with a mean of 19.46 seconds per trial. Architecture means were 20.00 seconds for DOM extraction, 19.14 for accessibility tree, 18.27 for vision, and 20.45 for CDP traversal.
+
+\end{document}

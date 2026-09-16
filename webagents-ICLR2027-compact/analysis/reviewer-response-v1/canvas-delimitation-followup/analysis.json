@@ -1,0 +1,168 @@
+{
+  "trials": 240,
+  "excluded": [],
+  "pooled": [
+    {
+      "layout": "canvas-inline-bar",
+      "criterion": "exact_match",
+      "successes": 0,
+      "trials": 40,
+      "rate": 0.0,
+      "wilson_low": 0.0,
+      "wilson_high": 0.08762160119728664
+    },
+    {
+      "layout": "canvas-inline-bar",
+      "criterion": "substring_match",
+      "successes": 37,
+      "trials": 40,
+      "rate": 0.925,
+      "wilson_low": 0.8013576647568946,
+      "wilson_high": 0.9741639742254119
+    },
+    {
+      "layout": "canvas-inline-bar",
+      "criterion": "target_without_marker",
+      "successes": 0,
+      "trials": 40,
+      "rate": 0.0,
+      "wilson_low": 0.0,
+      "wilson_high": 0.08762160119728664
+    },
+    {
+      "layout": "canvas-inline-two-spaces",
+      "criterion": "exact_match",
+      "successes": 0,
+      "trials": 40,
+      "rate": 0.0,
+      "wilson_low": 0.0,
+      "wilson_high": 0.08762160119728664
+    },
+    {
+      "layout": "canvas-inline-two-spaces",
+      "criterion": "substring_match",
+      "successes": 35,
+      "trials": 40,
+      "rate": 0.875,
+      "wilson_low": 0.738878801611489,
+      "wilson_high": 0.945404997490546
+    },
+    {
+      "layout": "canvas-inline-two-spaces",
+      "criterion": "target_without_marker",
+      "successes": 0,
+      "trials": 40,
+      "rate": 0.0,
+      "wilson_low": 0.0,
+      "wilson_high": 0.08762160119728664
+    },
+    {
+      "layout": "canvas-inline-gap-40px",
+      "criterion": "exact_match",
+      "successes": 10,
+      "trials": 40,
+      "rate": 0.25,
+      "wilson_low": 0.14187118639096302,
+      "wilson_high": 0.40193961420768026
+    },
+    {
+      "layout": "canvas-inline-gap-40px",
+      "criterion": "substring_match",
+      "successes": 29,
+      "trials": 40,
+      "rate": 0.725,
+      "wilson_low": 0.5716504419378943,
+      "wilson_high": 0.8389198375233267
+    },
+    {
+      "layout": "canvas-inline-gap-40px",
+      "criterion": "target_without_marker",
+      "successes": 10,
+      "trials": 40,
+      "rate": 0.25,
+      "wilson_low": 0.14187118639096302,
+      "wilson_high": 0.40193961420768026
+    },
+    {
+      "layout": "canvas-separate-line",
+      "criterion": "exact_match",
+      "successes": 31,
+      "trials": 40,
+      "rate": 0.775,
+      "wilson_low": 0.6249690325768998,
+      "wilson_high": 0.8768390867645927
+    },
+    {
+      "layout": "canvas-separate-line",
+      "criterion": "substring_match",
+      "successes": 37,
+      "trials": 40,
+      "rate": 0.925,
+      "wilson_low": 0.8013576647568946,
+      "wilson_high": 0.9741639742254119
+    },
+    {
+      "layout": "canvas-separate-line",
+      "criterion": "target_without_marker",
+      "successes": 31,
+      "trials": 40,
+      "rate": 0.775,
+      "wilson_low": 0.6249690325768998,
+      "wilson_high": 0.8768390867645927
+    },
+    {
+      "layout": "canvas-opposite-corner",
+      "criterion": "exact_match",
+      "successes": 38,
+      "trials": 40,
+      "rate": 0.95,
+      "wilson_low": 0.8349612263085903,
+      "wilson_high": 0.9861793326138516
+    },
+    {
+      "layout": "canvas-opposite-corner",
+      "criterion": "substring_match",
+      "successes": 38,
+      "trials": 40,
+      "rate": 0.95,
+      "wilson_low": 0.8349612263085903,
+      "wilson_high": 0.9861793326138516
+    },
+    {
+      "layout": "canvas-opposite-corner",
+      "criterion": "target_without_marker",
+      "successes": 38,
+      "trials": 40,
+      "rate": 0.95,
+      "wilson_low": 0.8349612263085903,
+      "wilson_high": 0.9861793326138516
+    },
+    {
+      "layout": "dom-inline-bar",
+      "criterion": "exact_match",
+      "successes": 0,
+      "trials": 40,
+      "rate": 0.0,
+      "wilson_low": 0.0,
+      "wilson_high": 0.08762160119728664
+    },
+    {
+      "layout": "dom-inline-bar",
+      "criterion": "substring_match",
+      "successes": 40,
+      "trials": 40,
+      "rate": 1.0,
+      "wilson_low": 0.9123783988027135,
+      "wilson_high": 1.0000000000000002
+    },
+    {
+      "layout": "dom-inline-bar",
+      "criterion": "target_without_marker",
+      "successes": 0,
+      "trials": 40,
+      "rate": 0.0,
+      "wilson_low": 0.0,
+      "wilson_high": 0.08762160119728664
+    }
+  ]
+}

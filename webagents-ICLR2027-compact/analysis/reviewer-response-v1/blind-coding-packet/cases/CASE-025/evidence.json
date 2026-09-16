@@ -1,0 +1,39 @@
+{
+  "action_results": [
+    [
+      {
+        "error": null,
+        "extracted_content": null,
+        "is_done": true,
+        "metadata": {
+          "code": "finished"
+        },
+        "success": true
+      }
+    ]
+  ],
+  "action_trace": [
+    [
+      {
+        "name": "finish",
+        "parameters": {
+          "answer": "ALPHA-7391 | CONTROL_READ_VALUE_R2",
+          "success": true
+        }
+      }
+    ]
+  ],
+  "case_id": "CASE-025",
+  "expected_value": "ALPHA-7391",
+  "final_answer_or_submitted_value": "ALPHA-7391 | CONTROL_READ_VALUE_R2",
+  "initial_screenshot": "initial-screenshot.png",
+  "model_responses": [
+    "{\"action\":\"finish\",\"answer\":\"ALPHA-7391 | CONTROL_READ_VALUE_R2\",\"success\":true}"
+  ],
+  "runner_final": {
+    "answer": "ALPHA-7391 | CONTROL_READ_VALUE_R2",
+    "error": null,
+    "success_claimed": true
+  },
+  "task_instruction": "Read the value labeled Source, return only that value, and finish successfully."
+}

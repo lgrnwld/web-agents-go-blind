@@ -1,0 +1,33 @@
+{
+  "analysis_id": "core-grid-v1",
+  "bootstrap_samples": 2000,
+  "created_at": "2026-08-31T02:33:59.783867+00:00",
+  "input_receipts": {
+    "accessibility_tree": "ff113eb6c4cdea86a637ae0808ba831b5ed29cbb6e2ab629c9c7098e3a212850",
+    "cdp_frame_traversal": "fb7f1217197cd522c320848f4d7e1b30901c40b242d11fa323c112344283d7e8",
+    "dom_extraction": "3c29182fd7fc83b5a8413c7eed7d9fc3c3c865f7ea98a1e98311729606ad2f89",
+    "vision": "26a49fa73819f0ccb3c38f537c6f04df626ed206929da9a685b57d003aa19028"
+  },
+  "outputs": {
+    "axis-curves.csv": "1d0e99a02f59eeb7964352d7ec9d7557e8675145089eec71344d1eee8cab03ab",
+    "cell-estimates.csv": "a9c743b790d51a13536dc5e22cda768a66bd7583155a25f12d4bc9e181530f26",
+    "cell-estimates.json": "096a45dea8e6fc548bbbff30c5bb846d5eaac81ecd493c71456e62dc4a5f6e01",
+    "confabulation-proxy.csv": "a28514d57f2b7e36b0c09f3bcbd04e40fce1072c89545303b4f29651c9de49c4",
+    "cost-by-level.csv": "541ff31a2e5ac67316b9b90cb2d7ae3cf4c850f787b980c3cd5b476037d63c18",
+    "curve-summaries.csv": "3c4244b08a4f264b50c8944f27e4d352a1d197ab863f164b144787d49a7e0032",
+    "figures/confabulation-proxy.svg": "9ecc6fc701ca7b272e8370dd55878f67c8cb39e214c18aafdc3eae962245b96d",
+    "figures/cost-curves.svg": "e998dfad1c206a7ecb10a44ccf34116b46efe54a2ffa979cc31f65d87b31743e",
+    "figures/paired-reachability-success-curves.svg": "d48e8014b9b8531a4e4ec17eccdd2936a7338b6f5817cc45447b9d8b58d74d04",
+    "figures/variance-decomposition.svg": "b1346e6154f85310310ecfda0f54f3a20838ea2f5a5e904eb503bbee0c8bfbcb",
+    "headline-curves.csv": "7611963e218500b78809d85bb4c02da3fb00eab0932b043518387dd8c42afef8",
+    "k-of-n-reliability.csv": "012de4c1266c8173182079be18e6e9b526a34b12ce3e0ae483dfbd24ba7f5d81",
+    "methods.md": "05bce640b543675fa36e6a67c9797ad3ef54fe52f4d3c7950c2da15c767857fc",
+    "reconciliation-manifest.json": "5a0af41d1a024dde3a2712013e8c4c511adb63cea37308014f4cbef406c6fb17",
+    "report.md": "050ba10477f31594580e1c2a14cd3faca561e0a3162b9aef2f3be5f2ba9b2cbe",
+    "variance-decomposition.csv": "5f191aad9ecd9907f54c6029668a65993f13771c9cb12731ab84a164c006f348",
+    "variance-decomposition.json": "6e5218781ade0ec6cb03eeb596ae58df59a44718cb19c50ebc6fd4aad05c234f"
+  },
+  "random_seed": 20260901,
+  "schema_version": "1.0",
+  "valid_outcomes": 1760
+}

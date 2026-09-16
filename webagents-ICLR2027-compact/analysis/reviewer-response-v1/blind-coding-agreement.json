@@ -1,0 +1,17 @@
+{
+  "agreements": 40,
+  "cohen_kappa": null,
+  "cohen_kappa_status": "undefined_zero_marginal_variance",
+  "disagreements": [],
+  "expected_chance_agreement": 1.0,
+  "first_label_counts": {
+    "extraction_failure": 40
+  },
+  "interpretation": "Both coders assigned all trials to extraction_failure. Raw agreement is complete, but ordinary Cohen's kappa is mathematically undefined because both marginal distributions have zero variance. PABAK is reported as a prevalence-adjusted sensitivity statistic, not as a replacement for ordinary kappa.",
+  "percent_agreement": 1.0,
+  "prevalence_adjusted_bias_adjusted_kappa": 1.0,
+  "second_label_counts": {
+    "extraction_failure": 40
+  },
+  "trials": 40
+}

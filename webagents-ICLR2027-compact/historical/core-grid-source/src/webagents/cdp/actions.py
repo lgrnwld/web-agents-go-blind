@@ -1,0 +1,132 @@
+"""Strict action protocol for CDP DOM-snapshot references."""
+
+from __future__ import annotations
+
+import json
+import re
+from typing import Annotated, Any, Literal
+
+from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, ValidationError
+
+from webagents.ax.targets import CDPConnection
+from webagents.cdp.observer import CDPReferenceMap
+from webagents.schemas import ActionRecord, ActionResultRecord
+
+
+class ActionParseError(ValueError):
+    """The provider returned something outside the CDP action protocol."""
+
+
+class _Action(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    action: str
+
+
+class ClickAction(_Action):
+    action: Literal["click"]
+    ref: str = Field(pattern=r"^cdp-[0-9]+$")
+
+
+class TypeAction(_Action):
+    action: Literal["type"]
+    ref: str = Field(pattern=r"^cdp-[0-9]+$")
+    text: str = Field(max_length=10_000)
+
+
+class PressAction(_Action):
+    action: Literal["press"]
+    key: str = Field(min_length=1, max_length=80)
+
+
+class ScrollAction(_Action):
+    action: Literal["scroll"]
+    direction: Literal["up", "down"]
+    amount: int = Field(gt=0, le=5000)
+
+
+class WaitAction(_Action):
+    action: Literal["wait"]
+    milliseconds: int = Field(ge=0, le=5000)
+
+
+class FinishAction(_Action):
+    action: Literal["finish"]
+    answer: str = Field(max_length=100_000)
+    success: bool
+
+
+CDPAction = Annotated[
+    ClickAction | TypeAction | PressAction | ScrollAction | WaitAction | FinishAction,
+    Field(discriminator="action"),
+]
+_ACTION_ADAPTER: TypeAdapter[CDPAction] = TypeAdapter(CDPAction)
+_SAFE_KEY = re.compile(
+    r"^(?:(?:Control|Alt|Meta|Shift)\+)*(?:[A-Za-z0-9]|Enter|Tab|Escape|Backspace|Delete|Space|"
+    r"Arrow(?:Up|Down|Left|Right)|Home|End|PageUp|PageDown)$"
+)
+
+
+def parse_action(text: str) -> CDPAction:
+    try:
+        value = json.loads(text)
+    except json.JSONDecodeError as exc:
+        raise ActionParseError(f"model response is not one JSON value: {exc}") from exc
+    try:
+        action = _ACTION_ADAPTER.validate_python(value)
+    except ValidationError as exc:
+        raise ActionParseError(f"invalid CDP action: {exc}") from exc
+    if isinstance(action, PressAction) and not _SAFE_KEY.fullmatch(action.key):
+        raise ActionParseError(f"unsupported key chord: {action.key!r}")
+    return action
+
+
+def action_record(action: CDPAction) -> ActionRecord:
+    payload = action.model_dump(mode="json")
+    return ActionRecord(name=str(payload.pop("action")), parameters=payload)
+
+
+async def execute_action(
+    action: CDPAction,
+    *,
+    refs: CDPReferenceMap,
+    generation: int,
+    connection: CDPConnection,
+    page: Any,
+) -> ActionResultRecord:
+    try:
+        if isinstance(action, FinishAction):
+            return ActionResultRecord(is_done=True, success=action.success, metadata={"code": "finished"})
+        if isinstance(action, WaitAction):
+            await page.wait_for_timeout(action.milliseconds)
+        elif isinstance(action, ScrollAction):
+            delta = action.amount if action.direction == "down" else -action.amount
+            await page.mouse.wheel(0, delta)
+        elif isinstance(action, PressAction):
+            await page.keyboard.press(action.key)
+        elif isinstance(action, (ClickAction, TypeAction)):
+            reference = refs.resolve(action.ref, generation=generation)
+            resolved = await connection.send(
+                "DOM.resolveNode",
+                {"backendNodeId": reference.backend_node_id},
+                session_id=reference.session_id,
+            )
+            object_id = resolved.get("object", {}).get("objectId")
+            if not isinstance(object_id, str):
+                raise ValueError(f"DOM.resolveNode returned no object for {action.ref}")
+            function = (
+                "function(){this.click()}"
+                if isinstance(action, ClickAction)
+                else "function(){this.focus();if(typeof this.select==='function'){this.select()}}"
+            )
+            await connection.send(
+                "Runtime.callFunctionOn",
+                {"objectId": object_id, "functionDeclaration": function, "returnByValue": True},
+                session_id=reference.session_id,
+            )
+            if isinstance(action, TypeAction):
+                await page.keyboard.insert_text(action.text)
+        return ActionResultRecord(success=True, metadata={"code": "ok"})
+    except Exception as exc:
+        return ActionResultRecord(error=str(exc), success=False, metadata={"code": "action_error"})
+    finally:
+        refs.invalidate()

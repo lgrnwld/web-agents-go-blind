@@ -1,0 +1,5 @@
+architecture,unreachable_trials,task_successes,rate,ci_lower,ci_upper,definition
+dom_extraction,40,0,0.0,0.0,0.08762160119728664,task success among trials with unreachable architecture evidence
+accessibility_tree,40,0,0.0,0.0,0.08762160119728664,task success among trials with unreachable architecture evidence
+vision,0,0,,,,task success among trials with unreachable architecture evidence
+cdp_frame_traversal,40,0,0.0,0.0,0.08762160119728664,task success among trials with unreachable architecture evidence

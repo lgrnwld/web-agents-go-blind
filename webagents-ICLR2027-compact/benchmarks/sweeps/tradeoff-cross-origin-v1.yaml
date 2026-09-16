@@ -1,0 +1,38 @@
+schema_version: "1.0"
+inventory_id: tradeoff-cross-origin-v1
+
+conditions:
+  - id: level-0
+    kind: flat
+    expected_reachability: present
+    dom_expected_reachability: present
+  - id: iframe-cross-depth-1
+    kind: iframe
+    iframe_origin: cross
+    iframe_depth: 1
+    expected_reachability: open_question
+    dom_expected_reachability: open_question
+  - id: iframe-cross-depth-2
+    kind: iframe
+    iframe_origin: cross
+    iframe_depth: 2
+    expected_reachability: open_question
+    dom_expected_reachability: open_question
+  - id: iframe-cross-depth-3
+    kind: iframe
+    iframe_origin: cross
+    iframe_depth: 3
+    expected_reachability: open_question
+    dom_expected_reachability: open_question
+
+axes:
+  - id: iframe-cross-origin-depth
+    levels:
+      - id: depth-0
+        condition_id: level-0
+      - id: depth-1
+        condition_id: iframe-cross-depth-1
+      - id: depth-2
+        condition_id: iframe-cross-depth-2
+      - id: depth-3
+        condition_id: iframe-cross-depth-3

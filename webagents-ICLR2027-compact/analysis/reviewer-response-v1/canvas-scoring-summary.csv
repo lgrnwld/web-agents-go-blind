@@ -1,0 +1,10 @@
+task_id,model_id,trials,exact_matches,substring_matches,target_without_marker_matches
+ALL,ALL,40,0,40,0
+ALL,foundry-gpt-5-6-terra,20,0,20,0
+ALL,foundry-kimi-k2-6,20,0,20,0
+copy-known-value,ALL,20,0,20,0
+copy-known-value,foundry-gpt-5-6-terra,10,0,10,0
+copy-known-value,foundry-kimi-k2-6,10,0,10,0
+read-known-value,ALL,20,0,20,0
+read-known-value,foundry-gpt-5-6-terra,10,0,10,0
+read-known-value,foundry-kimi-k2-6,10,0,10,0

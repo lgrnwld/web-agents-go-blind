@@ -1,0 +1,82 @@
+{
+  "status": "passed",
+  "matching_csv_tables": 26,
+  "tables": [
+    "reproduced/core-grid-v1/axis-curves.csv",
+    "reproduced/core-grid-v1/cell-estimates.csv",
+    "reproduced/core-grid-v1/confabulation-proxy.csv",
+    "reproduced/core-grid-v1/cost-by-level.csv",
+    "reproduced/core-grid-v1/curve-summaries.csv",
+    "reproduced/core-grid-v1/headline-curves.csv",
+    "reproduced/core-grid-v1/k-of-n-reliability.csv",
+    "reproduced/core-grid-v1/variance-decomposition.csv",
+    "reproduced/revision-20260915/distance-paired-effects.csv",
+    "reproduced/revision-20260915/dom-paired-effects.csv",
+    "reproduced/revision-20260915/generalization-cells.csv",
+    "reproduced/revision-20260915/generalization-distance.csv",
+    "reproduced/revision-20260915/generalization-dom.csv",
+    "reproduced/revision-20260915/generalization-trial-metrics.csv",
+    "reproduced/revision-20260915/iframe-cells.csv",
+    "reproduced/revision-20260915/iframe-paired-effects.csv",
+    "reproduced/revision-20260915/intervention-cells.csv",
+    "reproduced/revision-20260915/intervention-paired-effects.csv",
+    "reproduced/revision-20260915/natural-boundary-cells.csv",
+    "reproduced/revision-20260915/natural-boundary-trial-metrics.csv",
+    "reproduced/revision-20260915/separation-cells.csv",
+    "reproduced/revision-20260915/separation-content-stages.csv",
+    "reproduced/revision-20260915/separation-pooled-tasks.csv",
+    "reproduced/canvas-delimitation-followup/by-task-model.csv",
+    "reproduced/canvas-delimitation-followup/pooled.csv",
+    "reproduced/vision-model-extension/combined-cells.csv"
+  ],
+  "revision_valid_trials": 2640,
+  "primary_valid_trials": 1760,
+  "paired_image_audits": [
+    {
+      "study": "generalization",
+      "paired_groups": 180,
+      "different_image_groups": 0,
+      "different_group_keys": []
+    },
+    {
+      "study": "iframe",
+      "paired_groups": 20,
+      "different_image_groups": 0,
+      "different_group_keys": []
+    },
+    {
+      "study": "boundary-cues",
+      "paired_groups": 60,
+      "different_image_groups": 0,
+      "different_group_keys": []
+    }
+  ],
+  "provider_calls": 0,
+  "validation_environment": {
+    "python": "3.12.9",
+    "note": "Provider-free reanalysis tested from the sanitized exported directory using the available project Python environment.",
+    "analysis_dependencies": {
+      "pydantic": "2.12.5",
+      "PyYAML": "6.0.3",
+      "reportlab": "4.4.9",
+      "pillow": "12.2.0"
+    }
+  },
+  "manuscript_build": {
+    "compiler": "pdfLaTeX via latexmk",
+    "total_pages": 17,
+    "main_text_last_page": 9,
+    "undefined_references": 0,
+    "overfull_boxes": 0,
+    "bibliography_identical_to_original": true
+  },
+  "archive_integrity": {
+    "privacy": {
+      "files_scanned": 55740,
+      "identity_or_credential_findings": []
+    },
+    "archives_checked": 5292,
+    "errors": [],
+    "warnings": []
+  }
+}

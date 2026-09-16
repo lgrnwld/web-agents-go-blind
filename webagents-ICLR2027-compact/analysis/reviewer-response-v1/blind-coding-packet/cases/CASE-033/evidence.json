@@ -1,0 +1,81 @@
+{
+  "action_results": [
+    [
+      {
+        "error": null,
+        "extracted_content": null,
+        "is_done": false,
+        "metadata": {
+          "code": "ok"
+        },
+        "success": true
+      }
+    ],
+    [
+      {
+        "error": null,
+        "extracted_content": null,
+        "is_done": false,
+        "metadata": {
+          "code": "ok"
+        },
+        "success": true
+      }
+    ],
+    [
+      {
+        "error": null,
+        "extracted_content": null,
+        "is_done": true,
+        "metadata": {
+          "code": "finished"
+        },
+        "success": true
+      }
+    ]
+  ],
+  "action_trace": [
+    [
+      {
+        "name": "type",
+        "parameters": {
+          "text": "BRAVO-4826 I CONTROL_COPY_VALUE_R5",
+          "x": 179,
+          "y": 281
+        }
+      }
+    ],
+    [
+      {
+        "name": "press",
+        "parameters": {
+          "key": "Enter"
+        }
+      }
+    ],
+    [
+      {
+        "name": "finish",
+        "parameters": {
+          "answer": "Saved",
+          "success": true
+        }
+      }
+    ]
+  ],
+  "case_id": "CASE-033",
+  "expected_value": "BRAVO-4826",
+  "final_answer_or_submitted_value": "BRAVO-4826 I CONTROL_COPY_VALUE_R5",
+  "initial_screenshot": "initial-screenshot.png",
+  "model_responses": [
+    "{\"action\":\"type\",\"x\":179,\"y\":281,\"text\":\"BRAVO-4826 I CONTROL_COPY_VALUE_R5\"}",
+    "{\"action\":\"press\",\"key\":\"Enter\"}",
+    "{\"action\":\"finish\",\"answer\":\"Saved\",\"success\":true}"
+  ],
+  "runner_final": {
+    "answer": "Saved",
+    "error": null,
+    "success_claimed": true
+  },
+  "task_instruction": "The page has one Source value and one empty Destination field. Type exactly the Source value into Destination, press Enter to submit the form, then finish successfully."
+}

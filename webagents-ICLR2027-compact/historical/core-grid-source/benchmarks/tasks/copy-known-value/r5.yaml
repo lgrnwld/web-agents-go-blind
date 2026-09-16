@@ -1,0 +1,21 @@
+schema_version: "1.0"
+task_id: copy-known-value
+revision: 5
+semantic_goal: Copy one labeled source value into one destination and submit it.
+level0:
+  page_path: /cases/copy-known-value/r5/level-0
+  reset_path: /cases/copy-known-value/r5/reset
+  prompt: The page has one Source value and one empty Destination field. Type exactly the Source value into Destination, press Enter to submit the form, then finish successfully.
+  reachability_marker: CONTROL_COPY_VALUE_R5
+  checker:
+    name: json_endpoint_equals
+    version: "1.0"
+    endpoint_path: /cases/copy-known-value/r5/check
+    json_field: submitted_value
+    expected: BRAVO-4826
+  fixture:
+    kind: copy_value_form_large_target
+    source_value: BRAVO-4826
+    source_label: Source
+    destination_label: Destination
+    submit_label: Submit

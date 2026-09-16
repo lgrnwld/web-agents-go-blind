@@ -1,0 +1,199 @@
+{
+  "action_results": [
+    [
+      {
+        "error": "model response is not one JSON value: Extra data: line 2 column 1 (char 35)",
+        "extracted_content": null,
+        "is_done": false,
+        "metadata": {
+          "code": "invalid_action"
+        },
+        "success": false
+      }
+    ],
+    [
+      {
+        "error": null,
+        "extracted_content": null,
+        "is_done": false,
+        "metadata": {
+          "code": "ok"
+        },
+        "success": true
+      }
+    ],
+    [
+      {
+        "error": null,
+        "extracted_content": null,
+        "is_done": false,
+        "metadata": {
+          "code": "ok"
+        },
+        "success": true
+      }
+    ],
+    [
+      {
+        "error": null,
+        "extracted_content": null,
+        "is_done": false,
+        "metadata": {
+          "code": "ok"
+        },
+        "success": true
+      }
+    ],
+    [
+      {
+        "error": null,
+        "extracted_content": null,
+        "is_done": false,
+        "metadata": {
+          "code": "ok"
+        },
+        "success": true
+      }
+    ],
+    [
+      {
+        "error": null,
+        "extracted_content": null,
+        "is_done": false,
+        "metadata": {
+          "code": "ok"
+        },
+        "success": true
+      }
+    ],
+    [
+      {
+        "error": null,
+        "extracted_content": null,
+        "is_done": false,
+        "metadata": {
+          "code": "ok"
+        },
+        "success": true
+      }
+    ],
+    [
+      {
+        "error": null,
+        "extracted_content": null,
+        "is_done": false,
+        "metadata": {
+          "code": "ok"
+        },
+        "success": true
+      }
+    ],
+    [
+      {
+        "error": null,
+        "extracted_content": null,
+        "is_done": true,
+        "metadata": {
+          "code": "finished"
+        },
+        "success": true
+      }
+    ]
+  ],
+  "action_trace": [
+    [],
+    [
+      {
+        "name": "click",
+        "parameters": {
+          "x": 170,
+          "y": 270
+        }
+      }
+    ],
+    [
+      {
+        "name": "click",
+        "parameters": {
+          "x": 217,
+          "y": 270
+        }
+      }
+    ],
+    [
+      {
+        "name": "click",
+        "parameters": {
+          "x": 172,
+          "y": 317
+        }
+      }
+    ],
+    [
+      {
+        "name": "click",
+        "parameters": {
+          "x": 170,
+          "y": 330
+        }
+      }
+    ],
+    [
+      {
+        "name": "click",
+        "parameters": {
+          "x": 170,
+          "y": 330
+        }
+      }
+    ],
+    [
+      {
+        "name": "type",
+        "parameters": {
+          "text": "BRAVO-4826 | CONTROL_COPY_VALUE_R5",
+          "x": 170,
+          "y": 327
+        }
+      }
+    ],
+    [
+      {
+        "name": "press",
+        "parameters": {
+          "key": "Enter"
+        }
+      }
+    ],
+    [
+      {
+        "name": "finish",
+        "parameters": {
+          "answer": "Saved",
+          "success": true
+        }
+      }
+    ]
+  ],
+  "case_id": "CASE-008",
+  "expected_value": "BRAVO-4826",
+  "final_answer_or_submitted_value": "BRAVO-4826 | CONTROL_COPY_VALUE_R5",
+  "initial_screenshot": "initial-screenshot.png",
+  "model_responses": [
+    "{\"action\":\"click\",\"x\":210,\"y\":327}\n{\"action\":\"type\",\"x\":210,\"y\":327,\"text\":\"BRAVO-4826 | CONTROL_COPY_VALUE_R5\"}\n{\"action\":\"press\",\"key\":\"Enter\"}\n{\"action\":\"finish\",\"answer\":\"Submitted BRAVO-4826 | CONTROL_COPY_VALUE_R5\",\"success\":true}",
+    "{\"action\":\"click\",\"x\":170,\"y\":270}",
+    "{\"action\":\"click\",\"x\":217,\"y\":270}",
+    "{\"action\":\"click\",\"x\":172,\"y\":317}",
+    "{\"action\":\"click\",\"x\":170,\"y\":330}",
+    "{\"action\":\"click\",\"x\":170,\"y\":330}",
+    "{\"action\":\"type\",\"x\":170,\"y\":327,\"text\":\"BRAVO-4826 | CONTROL_COPY_VALUE_R5\"}",
+    "{\"action\":\"press\",\"key\":\"Enter\"}",
+    "{\"action\":\"finish\",\"answer\":\"Saved\",\"success\":true}"
+  ],
+  "runner_final": {
+    "answer": "Saved",
+    "error": null,
+    "success_claimed": true
+  },
+  "task_instruction": "The page has one Source value and one empty Destination field. Type exactly the Source value into Destination, press Enter to submit the form, then finish successfully."
+}

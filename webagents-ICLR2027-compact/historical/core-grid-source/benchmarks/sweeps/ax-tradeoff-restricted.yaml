@@ -1,0 +1,30 @@
+schema_version: "1.0"
+sweep_id: ax-tradeoff-restricted-v1
+agent_class: accessibility_tree
+
+control_receipt: artifacts/control/REPLACE-WITH-VALIDATION-ID/control-receipt.json
+models: from_control_receipt
+tasks: from_control_receipt
+primary_model: foundry/gpt-5.6-terra
+condition_inventory: benchmarks/sweeps/tradeoff-cross-origin-v1.yaml
+reuse_level0_controls: true
+observation_policy: same_origin_only
+
+allocation:
+  valid_trials_per_cell: 10
+  max_infrastructure_retries: 2
+
+runtime:
+  max_steps: 30
+  timeout_seconds: 180.0
+
+analysis:
+  confidence_interval: wilson-95
+  blindness_rubric: phrase-v1
+  randomization_seed: 20260831
+
+harness:
+  kind: builtin
+  host: 127.0.0.1
+  primary_port: 0
+  cross_origin_port: 0

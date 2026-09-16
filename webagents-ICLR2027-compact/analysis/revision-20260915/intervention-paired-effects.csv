@@ -1,0 +1,5 @@
+model,pairs,bootstrap_position_blocks,baseline,treatment,difference,bootstrap_low,bootstrap_high,improved,worsened,mcnemar_exact_p
+foundry/gpt-5.6-terra,20,20,0,20,1.0,1.0,1.0,20,0,1.9073486328125e-06
+foundry/Kimi-K2.6,20,20,0,15,0.75,0.6,0.9,15,0,6.103515625e-05
+foundry/gpt-5.4,20,20,1,11,0.5,0.35,0.65,10,0,0.001953125
+foundry/gpt-5-mini,20,20,0,11,0.55,0.5,0.65,11,0,0.0009765625

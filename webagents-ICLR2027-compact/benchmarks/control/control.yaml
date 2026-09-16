@@ -1,0 +1,43 @@
+schema_version: "1.0"
+
+classes:
+  - id: dom_extraction
+    runner: dom
+  - id: accessibility_tree
+    runner: ax
+  - id: vision
+    runner: vision
+  - id: cdp_frame_traversal
+    runner: cdp
+
+models:
+  - id: foundry-gpt-5-6-terra
+    runner_model: foundry/gpt-5.6-terra
+    expected_provider: foundry
+    expected_model: gpt-5.6-terra
+  - id: foundry-kimi-k2-6
+    runner_model: foundry/Kimi-K2.6
+    expected_provider: foundry
+    expected_model: Kimi-K2.6
+
+tasks:
+  - id: read-known-value
+    active_revision: 2
+    simplification_ladder: [3]
+  - id: copy-known-value
+    active_revision: 5
+    simplification_ladder: []
+
+policy:
+  repeats: 3
+  required_successes: 3
+  max_infrastructure_retries: 2
+  max_steps: 30
+  timeout_seconds: 180.0
+  schedule_seed: 20260812
+
+harness:
+  kind: builtin
+  host: 127.0.0.1
+  port: 0
+  health_path: /health

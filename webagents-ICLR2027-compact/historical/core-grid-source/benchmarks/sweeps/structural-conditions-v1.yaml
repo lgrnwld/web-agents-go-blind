@@ -1,0 +1,104 @@
+schema_version: "1.0"
+inventory_id: structural-conditions-v1
+
+# Eleven unique one-factor-at-a-time conditions. Architecture-specific
+# expectations are preregistration metadata only; scoring always uses the exact
+# archived observation from the corresponding runner.
+conditions:
+  - id: level-0
+    kind: flat
+    expected_reachability: present
+    dom_expected_reachability: present
+  - id: iframe-same-depth-1
+    kind: iframe
+    iframe_origin: same
+    iframe_depth: 1
+    expected_reachability: open_question
+    dom_expected_reachability: present
+  - id: iframe-same-depth-2
+    kind: iframe
+    iframe_origin: same
+    iframe_depth: 2
+    expected_reachability: open_question
+    dom_expected_reachability: present
+  - id: iframe-same-depth-3
+    kind: iframe
+    iframe_origin: same
+    iframe_depth: 3
+    expected_reachability: open_question
+    dom_expected_reachability: present
+  - id: iframe-cross-depth-1
+    kind: iframe
+    iframe_origin: cross
+    iframe_depth: 1
+    expected_reachability: absent
+    dom_expected_reachability: absent
+  - id: iframe-cross-depth-2
+    kind: iframe
+    iframe_origin: cross
+    iframe_depth: 2
+    expected_reachability: absent
+    dom_expected_reachability: absent
+  - id: iframe-cross-depth-3
+    kind: iframe
+    iframe_origin: cross
+    iframe_depth: 3
+    expected_reachability: absent
+    dom_expected_reachability: absent
+  - id: shadow-open
+    kind: shadow
+    shadow_modes: [open]
+    expected_reachability: open_question
+    dom_expected_reachability: open_question
+  - id: shadow-closed
+    kind: shadow
+    shadow_modes: [closed]
+    expected_reachability: absent
+    dom_expected_reachability: absent
+  - id: shadow-nested-open-open
+    kind: shadow
+    shadow_modes: [open, open]
+    expected_reachability: open_question
+    dom_expected_reachability: open_question
+  - id: rendered-canvas
+    kind: canvas
+    expected_reachability: absent
+    dom_expected_reachability: absent
+
+axes:
+  - id: iframe-same-origin-depth
+    levels:
+      - id: depth-0
+        condition_id: level-0
+      - id: depth-1
+        condition_id: iframe-same-depth-1
+      - id: depth-2
+        condition_id: iframe-same-depth-2
+      - id: depth-3
+        condition_id: iframe-same-depth-3
+  - id: iframe-cross-origin-depth
+    levels:
+      - id: depth-0
+        condition_id: level-0
+      - id: depth-1
+        condition_id: iframe-cross-depth-1
+      - id: depth-2
+        condition_id: iframe-cross-depth-2
+      - id: depth-3
+        condition_id: iframe-cross-depth-3
+  - id: shadow-containment
+    levels:
+      - id: none
+        condition_id: level-0
+      - id: open
+        condition_id: shadow-open
+      - id: closed
+        condition_id: shadow-closed
+      - id: nested-open-open
+        condition_id: shadow-nested-open-open
+  - id: rendered-target
+    levels:
+      - id: dom
+        condition_id: level-0
+      - id: canvas
+        condition_id: rendered-canvas

@@ -1,0 +1,33 @@
+\section{Calibrated iframe cells}
+\label{app:calibrated}
+The table reports the new calibrated and position-matched study. It does not replace the archived original cells in Table~\ref{tab:vision-model-task-cells}. S and X denote same- and cross-origin fixtures. The shared depth-zero cell is repeated for readability.
+
+\begin{table}[h]
+\centering
+\small
+\caption{Calibrated vision task success: successes out of ten trials per cell.}
+\begin{tabular}{llrrrrrrrr}
+\toprule
+Deployment & Task & S0 & S1 & S2 & S3 & X0 & X1 & X2 & X3 \\
+\midrule
+\texttt{gpt-5.6-terra} & Copy & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 \\
+\texttt{gpt-5.6-terra} & Read & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 \\
+\texttt{Kimi-K2.6} & Copy & 10/10 & 9/10 & 7/10 & 8/10 & 10/10 & 5/10 & 9/10 & 8/10 \\
+\texttt{Kimi-K2.6} & Read & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 \\
+\texttt{gpt-5.4} & Copy & 8/10 & 5/10 & 4/10 & 6/10 & 8/10 & 6/10 & 7/10 & 8/10 \\
+\texttt{gpt-5.4} & Read & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 \\
+\texttt{gpt-5-mini} & Copy & 1/10 & 2/10 & 3/10 & 0/10 & 1/10 & 2/10 & 1/10 & 1/10 \\
+\texttt{gpt-5-mini} & Read & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 & 10/10 \\
+\bottomrule
+\end{tabular}
+\end{table}
+All calibrated iframe geometry, initial screenshots, and click/submit checks are archived. Depth effects are reported as paired success-rate differences from depth zero, with bootstrap intervals in the artifact. The comparisons are exploratory; no equivalence margin was specified. Generalization availability is established from the independent text-range geometry checks; the original runner's legacy reachability selector does not identify the new field containers.
+The calibrated leaf fixtures use a 360-by-44-pixel destination field and a new matched presentation. The original large-target field was at least 56 pixels high. This study estimates depth contrasts within the new fixtures; it does not isolate the effect of coordinate correction on historical success rates.
+\section{Natural-boundary fixture examples}
+\label{app:fixtures}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.65\linewidth]{natural-fixtures.pdf}
+\caption{Crops of the archived copy-task fixtures for the natural-boundary control. Source and Reference occupy separate columns, cards, or labeled fields. Tokens remain fixed; pixel distances and shortest DOM parent-edge paths are measured for every fixture. The complete viewport also includes the Destination form.}
+\label{fig:natural-fixtures}
+\end{figure}

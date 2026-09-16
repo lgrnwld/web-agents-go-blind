@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "run_id": "01KZPD5RF0AEVYVGP4QJK7Y89Z",
+  "agent_class": "dom_extraction",
+  "framework": {
+    "name": "browser-use",
+    "version": "0.13.7",
+    "commit": "f0aa3a8bb03779c71a5aa262d389e3bfe6b77cdc"
+  },
+  "input": {
+    "page_url": "http://localhost:3000/cases/iframe-depth-0",
+    "task_prompt": "Read field X",
+    "model": "openrouter/openai/gpt-5.2"
+  },
+  "started_at": "2026-08-10T12:00:00Z",
+  "finished_at": "2026-08-10T12:00:01Z",
+  "status": "success",
+  "steps": [
+    {
+      "step": 0,
+      "attempt": 0,
+      "timestamp": "2026-08-10T12:00:00Z",
+      "url": "http://localhost:3000/cases/iframe-depth-0",
+      "observation": {
+        "kind": "serialized_dom",
+        "artifact_path": "observations/step-000/observation.txt",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "byte_length": 10
+      },
+      "model_request": {
+        "artifact_path": "observations/step-000/model-request.json",
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "byte_length": 20
+      },
+      "model_response": {
+        "text": "done",
+        "tool_calls": [],
+        "provider_metadata": {"provider": "openrouter"}
+      },
+      "actions": [],
+      "action_results": [],
+      "usage": {"input_tokens": 12, "output_tokens": 3},
+      "error": null
+    }
+  ],
+  "final": {"answer": "done", "success_claimed": true, "error": null}
+}
+

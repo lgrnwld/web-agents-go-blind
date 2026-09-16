@@ -1,0 +1,17 @@
+{
+  "archive_schema_version": "1.0",
+  "run_id": "FIXTURE-ARCHIVE-1",
+  "agent_class": "dom_extraction",
+  "observation_kind": "serialized_dom",
+  "observation": "FIXTURE_MARKER\n",
+  "model_request": {
+    "messages": [
+      {
+        "content": "<browser_state>\nFIXTURE_MARKER\n\n</browser_state>"
+      }
+    ],
+    "model": "fixture/model"
+  },
+  "expected_observation_sha256": "c5f82dd414deb1f1c5e9411aba049168d6c1946a3d36fe9ecd34778bda452c8b",
+  "expected_model_request_sha256": "56f76cfe9c9e0bfa7352ece9dcc507147c2a44fa7bbbb767d204a1295b355ef5"
+}

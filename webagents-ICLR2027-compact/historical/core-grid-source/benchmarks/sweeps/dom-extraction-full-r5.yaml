@@ -1,0 +1,36 @@
+schema_version: "1.0"
+sweep_id: dom-full-r5-v1
+agent_class: dom_extraction
+
+control_receipt: artifacts/control/REPLACE-WITH-VALIDATION-ID/control-receipt.json
+primary_model: foundry/gpt-5.6-terra
+primary_model_rationale: Common model across architecture classes with stable provider deployment identity.
+confirmation_rule: primary-majority-v1
+additional_models: from_control_receipt_except_primary
+tasks: from_control_receipt
+condition_inventory: benchmarks/sweeps/structural-conditions-v1.yaml
+reuse_level0_controls: true
+observation_policy: unrestricted
+
+# This is a fresh full-allocation matrix for the revision-5 control lineage. It
+# deliberately does not inherit the incompatible revision-2 DOM-light archive.
+allocation:
+  primary_valid_trials_per_cell: 10
+  additional_valid_trials_per_cell: 10
+  max_infrastructure_retries: 2
+  divergence_followup_trials: 0
+
+runtime:
+  max_steps: 30
+  timeout_seconds: 180.0
+
+analysis:
+  confidence_interval: wilson-95
+  blindness_rubric: phrase-v1
+  randomization_seed: 20260830
+
+harness:
+  kind: builtin
+  host: 127.0.0.1
+  primary_port: 0
+  cross_origin_port: 0

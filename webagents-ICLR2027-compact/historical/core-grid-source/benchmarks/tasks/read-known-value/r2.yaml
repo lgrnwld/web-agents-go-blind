@@ -1,0 +1,19 @@
+schema_version: "1.0"
+task_id: read-known-value
+revision: 2
+semantic_goal: Read one labeled value and report it exactly.
+level0:
+  page_path: /cases/read-known-value/r2/level-0
+  reset_path: /cases/read-known-value/r2/reset
+  prompt: Read the value labeled Source, return only that value, and finish successfully.
+  reachability_marker: CONTROL_READ_VALUE_R2
+  checker:
+    name: final_answer_equals
+    version: "1.0"
+    expected: ALPHA-7391
+  fixture:
+    kind: read_value
+    source_value: ALPHA-7391
+    source_label: Source
+    destination_label: Destination
+    submit_label: Submit

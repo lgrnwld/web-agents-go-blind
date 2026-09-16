@@ -1,0 +1,72 @@
+{
+  "reference_pdf_sha256": "1dfdf82506230da2c0612ff77f0cef5e713165c74cee75dbf31473ed42ade03c",
+  "matching_source": "output/overleaf/webagents1.7",
+  "reference_text_verified_pages": 13,
+  "reference_text_sha256": "3c8576f5990baf4908436dd04e7952f760238f63c72a9ea003a988fa508f4db8",
+  "new_valid_trials": 2640,
+  "repeats_per_cell": 10,
+  "sources": {
+    "separation-extension-final": {
+      "path": "artifacts/revision-20260915/separation-extension-final/results.jsonl",
+      "sha256": "5c0a4089fb626ab61c07a92db407bf0f06dae42c2adce125a9a37c248aeb66a5",
+      "trials": 240
+    },
+    "generalization-v2": {
+      "path": "artifacts/revision-20260915/generalization-v2/results.jsonl",
+      "sha256": "f361ead7b1730d48e5b0ae9d1b23e694518c1ecc853ee30628c2a338bb9a6a73",
+      "trials": 1440
+    },
+    "intervention-v2": {
+      "path": "artifacts/revision-20260915/intervention-v2/results.jsonl",
+      "sha256": "979d8edc2fb54f381e886cc36f7ad6c785ca29aa158699119ce30dafc108229e",
+      "trials": 160
+    },
+    "iframe-v2": {
+      "path": "artifacts/revision-20260915/iframe-v2/results.jsonl",
+      "sha256": "e4f22bf5d6b4452b214ad470204d8dd27d5ea6dde337e47cbd551c4e1096a115",
+      "trials": 560
+    },
+    "boundary-cues": {
+      "path": "artifacts/revision-20260915/boundary-cues/results.jsonl",
+      "sha256": "c62fc251c3ec1198edf2d35ae339ff08012b873b973d0ca9d07faaff7464d5d4",
+      "trials": 240
+    }
+  },
+  "image_pair_audits": [
+    {
+      "study": "generalization",
+      "paired_groups": 180,
+      "different_image_groups": 0,
+      "different_group_keys": []
+    },
+    {
+      "study": "iframe",
+      "paired_groups": 20,
+      "different_image_groups": 0,
+      "different_group_keys": []
+    },
+    {
+      "study": "boundary-cues",
+      "paired_groups": 60,
+      "different_image_groups": 0,
+      "different_group_keys": []
+    }
+  ],
+  "final_pdf_sha256": "2d0738b7dc63987662f63f8be46c543575c72c5af9cc777f6c744a74302f7900",
+  "verification": {
+    "focused_tests_passed": 8,
+    "all_264_cells_have_10_trials": true,
+    "latex_unresolved_references": false,
+    "latex_overfull_boxes": false,
+    "visual_review": "All 17 ICLR pages inspected; no clipping, overlaps, or unresolved references."
+  },
+  "format": "ICLR 2027 anonymous initial submission",
+  "main_text_pages": 9,
+  "total_pages": 17,
+  "official_style_sha256": {
+    "iclr2027_conference.sty": "797deef41724e93761426ac0cbcca46279a91cc650dd1f0ce76a4f08d2098ea6",
+    "iclr2027_conference.bst": "2d67552db7ed38ccfccb5957b52f95656e25c249724761d3cf5f7922ad1844c5",
+    "natbib.sty": "88bc70c0e48461934cab5b2accef06b74a8b3ac45ad03ccd3f2a6b7e0d6d530d",
+    "fancyhdr.sty": "b56ec4434b9f4607529a4b23dc68ad8d4b94f1f631c8cddaf7da78140d53a5ea"
+  }
+}
