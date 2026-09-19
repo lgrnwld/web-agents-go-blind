@@ -1,6 +1,6 @@
 # Compact reproducibility artifact — ICLR 2027
 
-This ZIP contains the complete anonymous reproducibility artifact in a lossless,
+This directory contains the complete anonymous reproducibility artifact in a lossless,
 deduplicated representation. All original outcomes, failed/retried runs, screenshots,
 model requests, responses, and provenance records are retained. Identical screenshots
 are stored once, and repeated base64 image payloads in model requests reference those
@@ -8,7 +8,7 @@ same image bytes. No screenshots were resized or converted to a lossy format.
 
 ## Reproduce the paper
 
-Extract the ZIP into a new directory, then run these commands from that directory.
+Run these commands from this directory.
 Use Python 3.12. Installing dependencies needs internet access; restoration and
 statistical reanalysis use local files and require no API keys or provider calls.
 
@@ -22,15 +22,31 @@ python3.12 -m venv .venv
 On Windows, replace `.venv/bin/python` with `.venv\Scripts\python.exe`.
 Restoration checks the compact package, reconstructs every original archive path,
 and verifies each file against the original SHA-256 manifest. It refuses to overwrite
-an existing output directory. The restored artifact is approximately 1.03 GB; allow
-at least 2 GB of disk space for the full workflow. Compression reduces download and
+an existing output directory. The restored artifact is approximately 1.16 GB; allow
+at least 3 GB of disk space for the full workflow. Compression reduces download and
 repository size; full reconstruction still requires the original storage space.
 
 The analysis regenerates the statistical tables and six numerical/fixture figure
-PDFs, checks 26 CSV tables against the reference analysis, and audits matched-image
-groups. Results appear in `restored/reproduced/`. The conceptual Figure 1 is supplied
+PDFs, checks 29 CSV tables against the reference analysis, and audits matched-image
+groups. It additionally checks all 880 new raw archives, initial screenshots, transcript-derived candidates, content scores, and the complete instance-study summary. Results appear in `restored/reproduced/`. The conceptual Figure 1 is supplied
 as an existing image. The existing `VALIDATION.json` records validation of the full
 release; `COMPACT-VALIDATION.json` records validation of this compact distribution.
+
+## Included revision
+
+The active paper contains nine main-text pages and 20 pages total. It preserves the original illustrated pipeline and adds the completed instance-variation study to the narrative about missing evidence and answer boundaries.
+
+There are **5,960 study outcomes plus 48 control outcomes**. The new 880 trials comprise 20 task-instance blocks, paired across four deployments and eleven conditions. Targets, markers, positions, and typography vary; the token format remains fixed. No generic-instruction control was added.
+
+- New results and frozen allocation: `artifacts/instance-variation-20260919-final/`.
+- Protocol, tables, paired intervals, and interpretation: `analysis/instance-variation-20260919/`.
+- New raw trial archives: losslessly encoded in `raw-audit/`; restoration reconstructs `artifacts/instance-variation-20260919-final/runs/runs/`.
+- Current paper: `paper/manuscript.pdf` and `paper/main.tex`.
+- Latest authoritative baseline: `paper/reference/coolwebagentsiclr.pdf`; the older `paper/reference-original.pdf` remains for historical run provenance.
+
+Structural marker-text reachability is distinct from **target region visible**. The latter does not establish legibility; the new audit checks geometry and recovered content separately. Historical schema names remain intact. Labeled components had 0/240 errors originally and 1/240 under the new broad substring/superset score (a truncated target, no marker included). Explicit-format prompting supplies boundary guidance and narrows the answer space simultaneously. Results establish robustness across these sampled synthetic instances, not real-site generalization.
+
+The reproduction workflow makes **zero model calls**. Fresh inference requires the full runner dependencies and your own deployments; see `raw-audit/original-readme.md` for the exact command. Preserve archived trial directories.
 
 ## Layout
 
@@ -67,5 +83,5 @@ deterministic reanalysis independently of continued deployment availability.
 
 The full release had already been anonymized. `ANONYMIZATION.json` documents that prior
 step. This compact encoding preserves those anonymized bytes exactly, including all
-original hashes. See `TEXT-CHANGES.md` for manuscript changes. This archive does not
+original hashes. The added study has its own `REVISION-ANONYMIZATION.json`; the original anonymization record remains unchanged. See `TEXT-CHANGES.md` for manuscript changes. This archive does not
 assert a new license grant.

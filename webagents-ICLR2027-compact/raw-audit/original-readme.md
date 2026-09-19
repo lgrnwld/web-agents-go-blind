@@ -1,6 +1,6 @@
 # Web-agent observation boundaries — ICLR 2027 reproducibility artifact
 
-This anonymous research snapshot accompanies the ICLR 2027 manuscript in `paper/`. Extract this ZIP into a repository and give the repository to your anonymization service. The ZIP has repository files at its root. No upload or publication has been performed. Update the manuscript's anonymous repository URL after the new repository is available.
+This revised anonymous research snapshot accompanies the 20-page ICLR 2027 manuscript in `paper/` (nine main-text pages). It includes the September 19 instance-variation study and preserves the earlier evidence. Extract this ZIP into a repository and give the repository to your anonymization service. The ZIP has repository files at its root. No upload or publication has been performed. Update the manuscript's anonymous repository URL after the new repository is available.
 
 ## Reproduce the reported analysis without model calls
 
@@ -13,7 +13,7 @@ python3.12 -m venv .venv
 .venv/bin/python reproduce.py
 ```
 
-On Windows, use `.venv\Scripts\python.exe`. Run commands from this directory. The driver writes `reproduced/`, regenerates statistical CSV tables and publication figures, and compares the numerical tables with the archived reference analysis. It fails on a mismatch. Move the generated directory aside before rerunning. `VALIDATION.json` records the export test; `reproduced/VERIFICATION.json` records your own run. Portable bundled fonts can change figure typography, and PDF timestamps can differ; statistical values are checked, not PDF byte identity.
+On Windows, use `.venv\Scripts\python.exe`. Run commands from this directory. The driver writes `reproduced/`, regenerates statistical CSV tables and publication figures, and compares all 29 numerical tables with the archived reference analysis. It also checks the complete instance-study summary, all 880 raw archive structures, initial screenshots against preflight hashes, transcript-derived candidates, and content/exact-match scores. Saved checker-emitted values supply the submission endpoint; terminal runner status is separate. It fails on a mismatch. Move the generated directory aside before rerunning. `VALIDATION.json` records the export test; `reproduced/VERIFICATION.json` records your own run. Portable bundled fonts can change figure typography, and PDF timestamps can differ; statistical values are checked, not PDF byte identity.
 
 ## Included evidence
 
@@ -27,16 +27,20 @@ On Windows, use `.venv\Scripts\python.exe`. Run commands from this directory. Th
 | Explicit-format intervention | 160 | `artifacts/revision-20260915/intervention-v2/` |
 | Calibrated randomized iframe rerun | 560 | `artifacts/revision-20260915/iframe-v2/` |
 | Visible natural-boundary controls | 240 | `artifacts/revision-20260915/boundary-cues/` |
+| Instance variation across four deployments | 880 | `artifacts/instance-variation-20260919-final/` |
 | Primary control gate | 48 | `artifacts/control/` |
 
-There are 5,080 study outcomes plus 48 control outcomes. Raw run archives also include retry attempts and inherited checkpoints; these are not additional independent observations. `PACKAGE-INVENTORY.json` gives the archive count. Every allocated revision cell has ten valid repeats.
+There are 5,960 study outcomes plus 48 control outcomes (6,008 total). The 880 new trials comprise 20 task-instance blocks paired across four deployments and eleven conditions; they are not 880 independent instances. Raw run archives also include retry attempts and inherited checkpoints; these are not additional independent observations. `PACKAGE-INVENTORY.json` gives the archive count. Every allocated revision cell has ten valid repeats.
 
 - `src/`, `benchmarks/`, `scripts/`, `tests/`: runner implementation, fixtures, configurations, analysis, and tests.
 - `artifacts/runs/` and `artifacts/revision-20260915/runs/runs/`: per-run observations, screenshots, model responses, transcripts, and checker evidence.
+- `artifacts/instance-variation-20260919-final/runs/runs/`: all 880 new raw trial archives.
+- `analysis/instance-variation-20260919/`: protocol, cell tables, paired intervals, report, and frozen summary.
 - `analysis/`: archived reference tables, coding audit, reports, completion receipt, and image-pair audits.
 - `historical/core-grid-source/`: source/configuration frozen for the primary run. The current source includes later calibration changes and should not be substituted for the historical source when interpreting old runs.
 - `paper/`: manuscript source, figures, compiled PDF, and the original anonymous reference PDF.
 - `ANONYMIZATION.json`: changed-file digests and the scope of release-only sanitization. Outcome values and screenshots are preserved. Hash references were rebound after identifying paths and provider resource names were removed; original digests remain available in this audit record.
+- `REVISION-ANONYMIZATION.json`: release-only changes and hash mappings for the added study. Historical anonymization records remain unchanged.
 - `SHA256SUMS`: integrity checks for the distributed files.
 
 ## Collect new experimental observations (optional; incurs API charges)
@@ -63,12 +67,37 @@ uv run python -m scripts.run_revision_experiments \
 
 Use `--study intervention`, `--study iframe`, or `--study boundary-cues` with separate output directories for the other arms. `--preflight-only` renders and checks fixtures without provider calls; use a separate preflight output directory. The separation extension uses `scripts.run_canvas_delimitation_followup`; consult `--help` and its distributed resolved specification for the recorded model roster, seed, eight-step budget, and 90-second timeout. Historical specifications and receipts preserve the original model/task allocations and run windows.
 
+### New instance-variation study
+
+The recorded allocation is seed 20260919, ten instances per task, four deployments, and eleven conditions. Target values, markers, position, and typography vary by task/instance; each instance is shared across conditions and deployments. The token format remains five uppercase letters, a hyphen, and four digits. No generic-instruction control was run. See `analysis/instance-variation-20260919/PROTOCOL.md`.
+
+To reanalyze only this study without provider calls, from the restored release:
+
+```sh
+.venv/bin/python -m scripts.analyze_instance_variation --output reproduced-instance
+PYTHONPATH=src .venv/bin/python -m scripts.audit_instance_variation --output reproduced-instance/archive-audit.json
+```
+
+For a fresh paid replication after installing the full runner dependencies and configuring your own environment, use new directories:
+
+```sh
+uv run python -m scripts.run_instance_variation \
+  --models foundry/gpt-5.6-terra foundry/Kimi-K2.6 foundry/gpt-5.4 foundry/gpt-5-mini \
+  --repeats 10 --seed 20260919 --concurrency 4 \
+  --output-dir fresh/instance-variation --archive-root fresh/instance-variation/runs \
+  --paper paper/reference/coolwebagentsiclr.pdf
+```
+
+Use `--preflight-only` with a separate output directory for fixture checks. Never rerun into or overwrite the archived study directory. The frozen runner and its dependency-source snapshots are retained with the allocation. Shared runtime source is unchanged from the preceding release.
+
 ## Interpretation and limitations
 
 The hidden DOM-edge contrast is a vision negative control: screenshots are held identical. Visible natural-boundary controls jointly change labels, layout, and spacing, so they do not isolate a causal DOM-distance effect. Delimitation of the last typed candidate is reported separately from actual task submission. The iframe rerun tests depth after coordinate calibration and position randomization; absence of a consistent gradient does not prove equivalence. Historical and calibrated iframe field sizes differ. See the manuscript and `analysis/revision-20260915/report.md` for details.
 
+Structural text reachability tests marker text in serialized observations. Vision's **target region visible** tests geometric inclusion, not legibility. Historical archive fields named `reachable`/`reachability` retain their original schema; the manuscript and new geometry endpoint distinguish them. The original 40 failed canvas answers contain the correct target token, separately supporting reading. Original labeled-component errors were 0/240; instance variation yields 1/240 under the broad substring/superset score, a one-character truncation without marker inclusion. Explicit-format instructions change boundary guidance and the answer space simultaneously. Paired intervals resample task-stratified instance blocks; synthetic-instance robustness does not establish real-site generalization.
+
 ## Manuscript and anonymous release
 
-`paper/main.tex` uses the official unmodified ICLR 2027 anonymous style. Compile with `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` from `paper/`. A separate compact Overleaf ZIP is supplied for editing. Read `TEXT-CHANGES.md` for the comparison with the original supplied paper.
+`paper/main.tex` uses the official unmodified ICLR 2027 anonymous style. Compile with `latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex` from `paper/`. A separate compact Overleaf ZIP is supplied for editing. Read `TEXT-CHANGES.md` for this revision. `paper/reference/coolwebagentsiclr.pdf` is the user-designated latest baseline, preserved byte-for-byte. `paper/reference-original.pdf` remains the earlier reference bound by historical runs. The previous release manuscript and change/validation records are in `historical/release-20260915/`. The illustrated pipeline figure retains its original artwork.
 
 The export excludes `.git`, private planning notes, real environment files, caches, and local build logs. It removes local account paths and concrete provider resource identifiers and checks for configured credential values. Included third-party template files retain their copyright notices. Review any future additions before sharing; anonymizing a repository does not automatically update the paper's link. No new license grant is asserted by this packaging step.

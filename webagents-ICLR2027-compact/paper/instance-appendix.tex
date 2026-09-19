@@ -1,0 +1,51 @@
+\section{Instance-variation design}
+\label{app:instance-variation}
+A separately frozen allocation crosses four vision deployments, two tasks, ten fresh instances per task, and eleven conditions ($N=880$). Each repeat generates a new five-letter/four-digit target token, an independent 12-character reference suffix, a new absolute position, and a sampled font family, font size, and line height. The same task--repeat instance is paired across every deployment and condition. Table, card, and form shells each use an 8-pixel gap, a 96-pixel gap, or separate labeled components; inline canvas uses baseline and the existing explicit-format prompt. There is no generic-instruction arm. The two canvas prompts see the same pixels.
+
+Targets retain five uppercase letters, a hyphen, and four digits; markers have the form \texttt{REF\_} followed by twelve uppercase letters/digits. Positions are sampled from $x=18$--65 and $y=60$--130 pixels. Font families are Arial, Verdana, or Georgia, and natural-layout text sizes are 15, 16, or 17 pixels (canvas adds four pixels). Shared natural-layout text rows use line heights of 1.2, 1.35, or 1.5; labeled components and canvas retain their own line layout. Ten instances are generated independently for each task, then reused across the matched conditions, rather than treated as independent at every layout.
+
+Before provider calls, browser text-range or canvas text-metric boxes must lie fully inside a calibrated $768\times768$ viewport. The 8- and 96-pixel natural-layout gaps are verified; copy fixtures pass pixel-center click/type/submit checks. Geometry is scorer-only and does not enter model requests. These checks establish target-region visibility, not OCR or human-verified legibility. Screenshots, prompts, model responses, actions, instance parameters, fixture source, and checksums are archived. Execution uses eight actions and 90 seconds per trial. Timeouts and model failures count; infrastructure errors are excluded and retried without changing the allocated instance.
+
+The primary content endpoint is delimitation error, scored from the final read answer or last attempted typed string. Exact candidate content, exact submitted success, missing answers, substitutions, and target-token presence are retained separately. Task success uses the recorded exact answer or submitted field value, independently of the runner's final status. A copy trial that already submitted the correct value remains a checked success if the runner later times out or fails to finish; terminal status is retained separately. Cell estimates use Wilson intervals; exploratory paired contrasts resample whole task-stratified instance blocks, preserving the three layouts sharing each instance. This tests robustness within the sampled synthetic tasks and token family, not real-site generalization or a universal visual threshold. Joint instance variation does not isolate separate causal effects of font, marker vocabulary, or absolute position.
+% BEGIN COMPLETED RESULTS
+
+\subsection{Completed instance-study results}
+All 880 allocated trials were obtained across 20 unique task--instance blocks. All target and distractor text boxes passed viewport checks. Infrastructure errors accounted for 0 excluded attempts. All model failures and timeouts remain in the denominators.
+
+\begin{table}[ht]
+\centering\small
+\caption{Instance variation: delimitation errors in familiar shells and exact task success on inline canvas. Shell counts pool three layouts and two tasks ($N=60$ per deployment and arm); canvas counts pool tasks ($N=20$).}
+\label{tab:instance-results}
+\begin{tabular}{lrrrrr}
+\toprule
+& \multicolumn{3}{c}{Delimitation errors} & \multicolumn{2}{c}{Canvas task success} \\
+Deployment & 8px & 96px & Labeled & Baseline & Format \\
+\midrule
+\texttt{gpt-5.6-terra} & 55/60 & 6/60 & 1/60 & 0/20 & 19/20 \\
+\texttt{Kimi-K2.6} & 51/60 & 0/60 & 0/60 & 0/20 & 15/20 \\
+\texttt{gpt-5.4} & 48/60 & 0/60 & 0/60 & 0/20 & 12/20 \\
+\texttt{gpt-5-mini} & 49/60 & 0/60 & 0/60 & 0/20 & 11/20 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering\small
+\caption{Paired instance-study effects in percentage points (treatment minus baseline), with task-stratified instance-block bootstrap 95\% intervals. Gap and labeled contrasts measure delimitation error; format measures task success.}
+\begin{tabular}{lrrr}
+\toprule
+Deployment & 96px minus 8px & Labeled minus 8px & Format minus baseline \\
+\midrule
+\texttt{gpt-5.6-terra} & $-81.7$ [$ -90.0, -73.3$] & $-90.0$ [$ -96.7, -81.7$] & $+95.0$ [$ +85.0, +100.0$] \\
+\texttt{Kimi-K2.6} & $-85.0$ [$ -93.3, -75.0$] & $-85.0$ [$ -93.3, -75.0$] & $+75.0$ [$ +55.0, +90.0$] \\
+\texttt{gpt-5.4} & $-80.0$ [$ -88.3, -71.7$] & $-80.0$ [$ -88.3, -71.7$] & $+60.0$ [$ +45.0, +75.0$] \\
+\texttt{gpt-5-mini} & $-81.7$ [$ -88.3, -75.0$] & $-81.7$ [$ -88.3, -75.0$] & $+55.0$ [$ +50.0, +65.0$] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{The single labeled-component error.}
+The only labeled-component output classified as delimitation was a copy trial in the card layout: \texttt{gpt-5.6-terra} submitted \texttt{ZZBH-1585} instead of \texttt{ZZZBH-1585}. The fixed scorer includes proper substrings in the delimitation endpoint, so this one-character omission is retained without relabeling. No labeled-component candidate included its reference marker. The observation is compatible with a transcription omission and does not establish an answer-boundary error by itself.
+\paragraph{Content and completion remain distinct.}
+The machine-readable cell tables retain each task, layout, deployment, and arm, with Wilson intervals for all endpoints. Across the three natural-layout arms, correct candidate content / exact task success / missing-answer counts were: \texttt{gpt-5.6-terra} 108/180 / 108/180 / 0/180; \texttt{Kimi-K2.6} 98/180 / 97/180 / 29/180; \texttt{gpt-5.4} 94/180 / 94/180 / 33/180; \texttt{gpt-5-mini} 111/180 / 84/180 / 20/180.
+No-answer outcomes and substitutions remain distinct from delimitation; zero observed delimitation is not proof of zero risk. Instance blocks, rather than model calls or individual layout rows, are the units of bootstrap resampling. Full paired intervals and cell counts are included in the accompanying analysis.

@@ -1,7 +1,10 @@
 {
   "status": "passed",
-  "matching_csv_tables": 26,
+  "matching_csv_tables": 29,
   "tables": [
+    "reproduced/instance-variation-20260919/cells.csv",
+    "reproduced/instance-variation-20260919/paired-effects.csv",
+    "reproduced/instance-variation-20260919/task-pooled-cells.csv",
     "reproduced/core-grid-v1/axis-curves.csv",
     "reproduced/core-grid-v1/cell-estimates.csv",
     "reproduced/core-grid-v1/confabulation-proxy.csv",
@@ -51,10 +54,23 @@
       "different_group_keys": []
     }
   ],
+  "instance_variation_valid_trials": 880,
+  "total_study_outcomes": 5960,
+  "control_outcomes": 48,
+  "instance_archive_audit": {
+    "status": "passed",
+    "archives_checked": 880,
+    "matching_initial_screenshots": 880,
+    "candidates_and_scores_checked": 880,
+    "unique_instances": 20,
+    "provider_calls": 0,
+    "submission_scope": "Exact task scores are recomputed from the saved checker-emitted values; candidate strings are independently recovered from transcripts.",
+    "visibility_scope": "Geometry is checked separately from legibility; no OCR or human legibility verification is asserted."
+  },
   "provider_calls": 0,
   "validation_environment": {
     "python": "3.12.9",
-    "note": "Provider-free reanalysis tested from the sanitized exported directory using the available project Python environment.",
+    "note": "Tested in a newly created virtual environment containing only requirements-reproduce.txt and its transitive dependencies.",
     "analysis_dependencies": {
       "pydantic": "2.12.5",
       "PyYAML": "6.0.3",
@@ -63,20 +79,9 @@
     }
   },
   "manuscript_build": {
-    "compiler": "pdfLaTeX via latexmk",
-    "total_pages": 17,
+    "total_pages": 20,
     "main_text_last_page": 9,
     "undefined_references": 0,
-    "overfull_boxes": 0,
-    "bibliography_identical_to_original": true
-  },
-  "archive_integrity": {
-    "privacy": {
-      "files_scanned": 55740,
-      "identity_or_credential_findings": []
-    },
-    "archives_checked": 5292,
-    "errors": [],
-    "warnings": []
+    "overfull_boxes": 0
   }
 }

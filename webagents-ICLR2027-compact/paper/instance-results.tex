@@ -1,0 +1,6 @@
+\subsection{Instance variation tests the failure beyond fixed strings}
+\label{sec:instances}
+
+A separately frozen 880-trial study uses ten new instances per task, varying target values, marker strings, positions, and typography while pairing instances across deployments and conditions. Increasing the gap from 8 to 96 pixels reduced delimitation errors by 80.0--85.0 percentage points across the four deployments (all paired 95\% intervals excluded zero), while exact task success rose by 66.7--80.0 points. Labeled components yielded 1/240 errors under the subset/superset endpoint: one truncated target, with no marker appended. This broad score includes character omissions and does not by itself identify a latent boundary mechanism.
+
+On varied inline canvas, explicit-format prompts raised exact task success from 0/80 to 57/80 (11--19/20 per deployment). Appendix~\ref{app:instance-variation} reports deployment-resolved counts, paired intervals, content and submission outcomes, and design details. The failure and mitigation effects persist across these sampled synthetic instances; real-site generalization remains untested.

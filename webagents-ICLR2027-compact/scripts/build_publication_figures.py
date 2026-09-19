@@ -184,7 +184,7 @@ def build_outcomes() -> None:
 
     # One visual grammar throughout: horizontal estimates on a common 0--100% scale.
     circle_marker(c, 119, 290, REACH, open_marker=True)
-    text(c, 128, 287.5, "Evidence reached", 6.7, color=MUTED)
+    text(c, 128, 287.5, "Text reached / region visible", 6.2, color=MUTED)
     square_marker(c, 226, 290, SUCCESS)
     text(c, 235, 287.5, "Task completed", 6.7, color=MUTED)
 

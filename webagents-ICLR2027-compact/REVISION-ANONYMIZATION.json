@@ -1,0 +1,21 @@
+{
+  "changed_files": [
+    {
+      "path": "artifacts/instance-variation-20260919-final/run_revision_experiments.py",
+      "original_sha256": "521ee4957bb24f18ed51780812c78615c378c118c871f909e3f5eb428f41b5de",
+      "distributed_sha256": "dd2018204652fad7b0e26c3caeb8d9b8c0bb880f4317098cca36f7017987b1c8"
+    },
+    {
+      "path": "analysis/instance-variation-20260919/PROTOCOL.md",
+      "original_sha256": "df7a9ac8da2707bf8efc41bfbd662947c1348cce5e06713131b3fcd36db22ff9",
+      "distributed_sha256": "0dc9037c79abfc8b2bf6f3ab1b066defbd8d99b1b4ec5369d01d133cbf4bd187"
+    },
+    {
+      "path": "scripts/analyze_instance_variation.py",
+      "original_sha256": "cbf83d22e70c1dcc0a7d2b26ace3cd7b09f2c13ad509918503b7c0066d8ecbd5",
+      "distributed_sha256": "a3f2be0b532f3331f441fc5612573fec931dc36a118e217ea37ab4e16126d2b7"
+    }
+  ],
+  "hash_rebinding_passes": 1,
+  "note": "Release-only removal of local identities and provider resource names, updated offline import and protocol paths, and consequent hash references. Historical ANONYMIZATION.json is retained. Outcomes and screenshot bytes are unchanged."
+}

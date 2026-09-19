@@ -1,17 +1,19 @@
 {
   "status": "passed",
   "round_trip": {
-    "files_verified_against_original_manifest": 68050,
-    "original_checksum_manifest_also_preserved": true,
-    "raw_run_archives_preserved": 5292,
-    "raw_archive_paths_restored": 67230,
-    "original_manifest_sha256": "3acd26ab91e98514017507a2db486664f11d57e815270b0cb79b97e70b83b548",
-    "exact_bytes_preserved": true
+    "files_verified_against_original_manifest": 78924,
+    "raw_archive_paths_restored": 77878,
+    "raw_run_archives_preserved": 6172,
+    "exact_bytes_preserved": true,
+    "original_manifest_sha256": "fb8e9139978af55b9da5a8d267aa3312d7f1721de20098ef9fbc367fc4c2ed58"
   },
   "analysis_from_reconstructed_archive": {
     "status": "passed",
-    "matching_csv_tables": 26,
+    "matching_csv_tables": 29,
     "tables": [
+      "reproduced/instance-variation-20260919/cells.csv",
+      "reproduced/instance-variation-20260919/paired-effects.csv",
+      "reproduced/instance-variation-20260919/task-pooled-cells.csv",
       "reproduced/core-grid-v1/axis-curves.csv",
       "reproduced/core-grid-v1/cell-estimates.csv",
       "reproduced/core-grid-v1/confabulation-proxy.csv",
@@ -61,21 +63,42 @@
         "different_group_keys": []
       }
     ],
+    "instance_variation_valid_trials": 880,
+    "total_study_outcomes": 5960,
+    "control_outcomes": 48,
+    "instance_archive_audit": {
+      "status": "passed",
+      "archives_checked": 880,
+      "matching_initial_screenshots": 880,
+      "candidates_and_scores_checked": 880,
+      "unique_instances": 20,
+      "provider_calls": 0,
+      "submission_scope": "Exact task scores are recomputed from the saved checker-emitted values; candidate strings are independently recovered from transcripts.",
+      "visibility_scope": "Geometry is checked separately from legibility; no OCR or human legibility verification is asserted."
+    },
     "provider_calls": 0
   },
   "environment": {
     "python": "3.12.9",
-    "dependencies": {
+    "note": "Tested in a newly created virtual environment containing only requirements-reproduce.txt and its transitive dependencies.",
+    "analysis_dependencies": {
       "pydantic": "2.12.5",
       "PyYAML": "6.0.3",
       "reportlab": "4.4.9",
       "pillow": "12.2.0"
-    },
-    "note": "Tested with the available project environment, not a newly installed environment."
+    }
   },
-  "privacy_scan": {
-    "files_scanned": 1688,
-    "local_identity_or_known_credential_matches": 0,
-    "git_metadata_and_real_env_files": 0
+  "preservation_and_privacy_scan": {
+    "status": "passed",
+    "privacy_files_scanned": 2415,
+    "identity_or_known_credential_matches": 0,
+    "historical_evidence_files_preserved_byte_for_byte": 67882,
+    "targeted_tests_passed": 8
+  },
+  "manuscript": {
+    "pages": 20,
+    "main_text_pages": 9,
+    "changed_artifact_page_visually_checked": true,
+    "original_pipeline_artwork_preserved": true
   }
 }

@@ -1,12 +1,12 @@
 {
-  "original_manifest_files": 68050,
-  "original_bytes_excluding_checksum_manifest": 1022573956,
-  "raw_paths": 67230,
-  "raw_bytes": 991983556,
-  "unique_blob_bytes": 23899747,
-  "externalized_payloads_in_unique_records": 2500,
-  "raw_run_archives": 5292,
-  "unique_text_records": 45316,
-  "unique_binary_blobs": 835,
-  "compact_uncompressed_bytes_before_manifests": 268834270
+  "original_manifest_files": 78924,
+  "original_bytes_excluding_checksum_manifest": 1164506060,
+  "raw_paths": 77878,
+  "raw_bytes": 1124186233,
+  "unique_blob_bytes": 36610677,
+  "externalized_payloads_in_unique_records": 4058,
+  "raw_run_archives": 6172,
+  "unique_text_records": 52770,
+  "unique_binary_blobs": 1335,
+  "compact_uncompressed_bytes_before_manifests": 309639135
 }
